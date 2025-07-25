@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEA201 Quiz Collection - Computer Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .quiz-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quiz-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .quiz-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .quiz-subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .quiz-questions {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .quiz-semester {
+            background: #f3e5f5;
+            color: #7b1fa2;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .quiz-description {
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .intro-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .intro-section h2 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .intro-section p {
+            color: #533f04;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CEA201 Quiz Collection</h1>
+            <p>Computer Architecture & Organization - Interactive Practice Tests</p>
+        </div>
+
+        <div class="content">
+            <div class="intro-section">
+                <h2>Chào mừng đến với Bộ sưu tập Quiz CEA201</h2>
+                <p>Tập hợp các bài quiz tương tác giúp bạn ôn tập và kiểm tra kiến thức về Kiến trúc Máy tính. Mỗi quiz được thiết kế với giao diện thân thiện, có giải thích chi tiết và hệ thống chấm điểm tự động.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Bộ Quiz</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">385</div>
+                    <div class="stat-label">Tổng Câu Hỏi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Có Giải Thích</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Lần Làm</div>
+                </div>
+            </div>
+
+            <div class="quiz-grid">
+                <a href="CEA201_SU24_RE_823913_Quiz.html" class="quiz-card">
+                    <div class="quiz-title">CEA201 SU24 RE Quiz</div>
+                    <div class="quiz-subtitle">Student ID: 823913</div>
+                    <div class="quiz-info">
+                        <span class="quiz-questions">50 câu hỏi</span>
+                        <span class="quiz-semester">SU24 RE</span>
+                    </div>
+                    <div class="quiz-description">
+                        Bài quiz tổng hợp về Kiến trúc máy tính, bao gồm Von Neumann architecture, memory hierarchy, I/O systems và các khái niệm cơ bản.
+                    </div>
+                </a>
+
+                <a href="CEA201_SU24_FE_400392_Quiz.html" class="quiz-card">
+                    <div class="quiz-title">CEA201 SU24 FE Quiz</div>
+                    <div class="quiz-subtitle">Student ID: 400392</div>
+                    <div class="quiz-info">
+                        <span class="quiz-questions">50 câu hỏi</span>
+                        <span class="quiz-semester">SU24 FE</span>
+                    </div>
+                    <div class="quiz-description">
+                        Đề thi cuối kỳ SU24 với các câu hỏi về processor architecture, instruction sets, pipelining và multiprocessor systems.
+                    </div>
+                </a>
+
+                <a href="CEA201_FA24_RE_306561_Quiz.html" class="quiz-card">
+                    <div class="quiz-title">CEA201 FA24 RE Quiz</div>
+                    <div class="quiz-subtitle">Student ID: 306561</div>
+                    <div class="quiz-info">
+                        <span class="quiz-questions">25 câu hỏi</span>
+                        <span class="quiz-semester">FA24 RE</span>
+                    </div>
+                    <div class="quiz-description">
+                        Quiz thi lại FA24 tập trung vào memory systems, cache design, storage technologies và boolean algebra.
+                    </div>
+                </a>
+
+                <a href="CEA201_FA24_FE_268514_Quizz.html" class="quiz-card">
+                    <div class="quiz-title">CEA201 FA24 FE Quiz</div>
+                    <div class="quiz-subtitle">Student ID: 268514</div>
+                    <div class="quiz-info">
+                        <span class="quiz-questions">50 câu hỏi</span>
+                        <span class="quiz-semester">FA24 FE</span>
+                    </div>
+                    <div class="quiz-description">
+                        Đề thi cuối kỳ FA24 bao gồm toàn bộ chương trình học: computer organization, instruction execution, RISC vs CISC và parallel processing.
+                    </div>
+                </a>
+
+                <a href="CEA201_SU25_Quiz.html" class="quiz-card">
+                    <div class="quiz-title">CEA201 SU25 Quiz</div>
+                    <div class="quiz-subtitle">Tổng hợp</div>
+                    <div class="quiz-info">
+                        <span class="quiz-questions">210 câu hỏi</span>
+                        <span class="quiz-semester">SU25</span>
+                    </div>
+                    <div class="quiz-description">
+                        Bộ câu hỏi ôn tập toàn diện cho kỳ SU25, trích xuất từ nguồn tài liệu chính thức, bao gồm tất cả các chương.
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

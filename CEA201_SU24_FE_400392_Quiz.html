@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEA201 SU24 FE Quiz - Student ID: 400392</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .score-summary {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .quiz-content {
+            padding: 40px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .question-item {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .question-item.answered {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+
+        .question-item.incorrect {
+            border-color: #dc3545;
+            background: #fff8f8;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .question-status {
+            font-size: 1.2em;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .options-container {
+            margin-bottom: 15px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option-item.selected {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+
+        .option-item.correct {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .option-item.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .option-item.user-selected {
+            border-color: #007bff;
+            background: #cce7ff;
+            font-weight: bold;
+        }
+
+        .option-item.user-incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+            text-decoration: line-through;
+        }
+
+        .answer-indicator {
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .correct-indicator {
+            color: #28a745;
+        }
+
+        .incorrect-indicator {
+            color: #dc3545;
+        }
+
+        .explanation {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation h4 {
+            color: #856404;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+        }
+
+        .explanation p {
+            color: #533f04;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .action-buttons {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 20px 40px;
+            border-top: 2px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .icon {
+            margin-right: 8px;
+        }
+
+        /* Scrollbar styling */
+        .quiz-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .quiz-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .quiz-content::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        .quiz-content::-webkit-scrollbar-thumb:hover {
+            background: #5a6fd8;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>🖥️ CEA201 SU24 FE Quiz</h1>
+            <p>Computer Architecture - Student ID: 400392</p>
+            <div class="score-summary">
+                <div class="score-item">
+                    <div class="score-number" id="totalQuestions">50</div>
+                    <div class="score-label">Tổng câu</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-number" id="answeredCount">0</div>
+                    <div class="score-label">Đã trả lời</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-number" id="correctCount">0</div>
+                    <div class="score-label">Đúng</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-number" id="scorePercentage">0%</div>
+                    <div class="score-label">Điểm số</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-content" id="quizContent">
+            <!-- Questions will be dynamically generated here -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="resetQuiz()">
+                🔄 Làm lại toàn bộ
+            </button>
+            <div>
+                <button class="btn btn-primary" onclick="showAllAnswers()">
+                    👁️ Hiện tất cả đáp án
+                </button>
+                <button class="btn btn-success" onclick="checkAllAnswers()">
+                    ✅ Kiểm tra kết quả
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                question: "Which of the following components was used in the first ENIAC computer?",
+                options: [
+                    "Bipolar transistors",
+                    "Field transistors",
+                    "Vacuum tubes",
+                    "Semiconductor ICs"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "ENIAC sử dụng đèn chân không (Vacuum tubes) như thành phần chính. Đây là đặc trưng của thế hệ máy tính đầu tiên (1940s-1950s)."
+            },
+            {
+                id: 2,
+                question: "Which of the following statements is true for Von Neumann architecture?",
+                options: [
+                    "Shared bus between the program memory and data memory",
+                    "Separate bus between the program memory and data memory",
+                    "External bus for program memory and data memory",
+                    "External bus for data memory only"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Kiến trúc Von Neumann đặc trưng bởi việc chia sẻ bus giữa bộ nhớ chương trình và bộ nhớ dữ liệu, khác với kiến trúc Harvard có bus riêng biệt."
+            },
+            {
+                id: 3,
+                question: "Which of the following component does not belong to central processing unit?",
+                options: [
+                    "System interconnection",
+                    "Arithmetic and logic unit",
+                    "Registers",
+                    "Control unit",
+                    "CPU interconnection"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "System interconnection không thuộc về CPU. CPU bao gồm ALU, Registers, Control Unit và CPU interconnection."
+            },
+            {
+                id: 4,
+                question: "Central processing unit (CPU) of IAS computer consists of",
+                options: [
+                    "Main memory and ALU (arithmetic and logic unit)",
+                    "ALU (Arithmetic and Logic Unit) and CU (Control Unit)",
+                    "CU (Control Unit) and IO Module",
+                    "ALU (Arithmetic and Logic Unit) and IO Module"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "CPU của máy tính IAS gồm 2 thành phần chính: ALU (Arithmetic and Logic Unit) và CU (Control Unit)."
+            },
+            {
+                id: 5,
+                question: "The first generation of computers used _______ for digital logic elements and memory?",
+                options: [
+                    "Transistor",
+                    "Integrated Circuits",
+                    "Large-scale integration",
+                    "Vacuum Tubes"
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "Thế hệ máy tính đầu tiên sử dụng Vacuum Tubes cho các phần tử logic số và bộ nhớ. Đây là công nghệ chủ đạo từ 1940s-1950s."
+            },
+            {
+                id: 6,
+                question: "In the computer, what categories do external devices include? (choose 3 correct answers)",
+                options: [
+                    "Human readable",
+                    "Communication",
+                    "Data Conversion",
+                    "Machine readable"
+                ],
+                correct: [0, 1, 3],
+                type: "multiple",
+                explanation: "Các thiết bị ngoại vi được phân thành 3 nhóm: Human readable (màn hình, bàn phím), Communication (card mạng, modem), Machine readable (cảm biến, scanner)."
+            },
+            {
+                id: 7,
+                question: "Which of the following determines the Bus Width?",
+                options: [
+                    "The clock speed of the CPU",
+                    "The number of cores in the processor",
+                    "The size of the motherboard",
+                    "The number of parallel lines in the data bus",
+                    "Number of components connected to Bus"
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "Bus Width được xác định bởi số lượng đường song song trong data bus. Số đường này quyết định lượng dữ liệu có thể truyền cùng lúc."
+            },
+            {
+                id: 8,
+                question: "In the CPU, what is the functionality of the control unit?",
+                options: [
+                    "To decode program instructions",
+                    "To controls the sequence of operations",
+                    "To store program instructions",
+                    "To transfer data to primary storage"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Control Unit có chức năng điều khiển trình tự các thao tác (sequence of operations) trong CPU, đảm bảo các lệnh được thực hiện đúng thứ tự."
+            },
+            {
+                id: 9,
+                question: "The basic components of a computer are:",
+                options: [
+                    "Main memory, CPU, I/O modules and system interconnection",
+                    "Main memory, CPU, I/O modules and Storage device",
+                    "Main Memory, CPU, Peripherals and Storage device",
+                    "Main memory, CPU, I/O modules and Storage device"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Các thành phần cơ bản của máy tính: Main memory, CPU, I/O modules và system interconnection."
+            },
+            {
+                id: 10,
+                question: "What is the correct order of memory access speed from fastest to slowest?",
+                options: [
+                    "Registers > Cache > RAM > SSD",
+                    "Cache > Registers > RAM > SSD",
+                    "Registers > Cache > SSD > RAM",
+                    "Cache > Registers > SSD > RAM",
+                    "All of the mentioned are wrong"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Thứ tự tốc độ truy cập bộ nhớ từ nhanh đến chậm: Registers > Cache > RAM > SSD. Thanh ghi nhanh nhất, SSD chậm nhất."
+            },
+            {
+                id: 11,
+                question: "What is the cache memory level that is integrated into the processor chip and has the lowest latency?",
+                options: [
+                    "L1 cache",
+                    "L2 cache",
+                    "L3 cache",
+                    "L4 cache"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "L1 cache được tích hợp trực tiếp vào chip processor và có độ trễ thấp nhất trong các cấp cache memory."
+            },
+            {
+                id: 12,
+                question: "Which of the following components of CPU is responsible to direct the system to execute instructions?",
+                options: [
+                    "Arithmetic and Logic Unit (ALU)",
+                    "Control Unit (CU)",
+                    "Registers",
+                    "Random Access Memory (RAM)"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Control Unit (CU) chịu trách nhiệm điều hướng hệ thống thực thi các lệnh, điều khiển toàn bộ hoạt động của CPU."
+            },
+            {
+                id: 13,
+                question: "Consider a machine with a byte addressable main memory of 2^16 bytes and block size of 8 bytes. Assume that a direct mapped cache consisting of 32 lines is used with this machine. How many bits are there in the line field of the cache?",
+                options: [
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Với 32 lines trong direct mapped cache, cần log₂(32) = 5 bits cho line field. Công thức: log₂(số lines) = số bits cần thiết."
+            },
+            {
+                id: 14,
+                question: "For reads to and writes from main memory, _______ translates each virtual address into a physical address in main memory.",
+                options: [
+                    "MAR",
+                    "MMU",
+                    "Overlays",
+                    "TLB",
+                    "Accumulator"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "MMU (Memory Management Unit) có nhiệm vụ dịch địa chỉ ảo (virtual address) thành địa chỉ vật lý (physical address) trong main memory."
+            },
+            {
+                id: 15,
+                question: "What is the main idea of using Hamming code for error correction?",
+                options: [
+                    "Adding extra parity bits to the data bits such that the number of 1s in each subset of bits is even",
+                    "Adding extra parity bits to the data bits such that the number of 1s in each subset of bits is odd",
+                    "Adding extra parity bits to the data bits such that the parity bits form a binary number indicating the position of the error bit",
+                    "Adding extra parity bits to the data bits such that the parity bits form a binary number indicating the number of error bits"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Hamming code thêm các parity bits để tạo thành số nhị phân chỉ ra vị trí của bit lỗi, cho phép phát hiện và sửa lỗi single-bit."
+            },
+            {
+                id: 16,
+                question: "What are the key differences in the architecture of NOR and NAND flash memory?",
+                options: [
+                    "NOR flash memory cells are connected in series, while NAND flash memory cells are connected in parallel",
+                    "NOR flash memory cells are connected in parallel, while NAND flash memory cells are connected in series",
+                    "Both NOR and NAND flash memory cells are connected in series",
+                    "Both NOR and NAND flash memory cells are connected in parallel",
+                    "All of the mentioned are wrong"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "NOR flash có các cell kết nối song song, trong khi NAND flash có các cell kết nối nối tiếp. Điều này ảnh hưởng đến tốc độ và cách thức truy cập."
+            },
+            {
+                id: 17,
+                question: "Which memory has the fastest speed and smallest capacity?",
+                options: [
+                    "Cache",
+                    "Main memory",
+                    "HDD",
+                    "Magnetic Disk"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Cache memory có tốc độ nhanh nhất và dung lượng nhỏ nhất trong hệ thống phân cấp bộ nhớ."
+            },
+            {
+                id: 18,
+                question: "_______ is a set of physical disk drives viewed by the operating system as a single logical drive.",
+                options: [
+                    "CLV",
+                    "SSD",
+                    "RAID",
+                    "CAV"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "RAID (Redundant Array of Independent Disks) là tập hợp các ổ đĩa vật lý được hệ điều hành nhìn nhận như một ổ đĩa logic duy nhất."
+            },
+            {
+                id: 19,
+                question: "Sort the following memory types in ascending order by access speed:",
+                options: [
+                    "HDD - Main Memory - L2 cache - L1 cache",
+                    "HDD - Main Memory - L1 cache - L2 cache",
+                    "HDD - L2 cache - L1 cache - Main Memory",
+                    "Main Memory - L2 cache - L1 cache - HDD"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Thứ tự tốc độ truy cập từ chậm đến nhanh: HDD → Main Memory → L2 cache → L1 cache."
+            },
+            {
+                id: 20,
+                question: "Which is the correct choice for sorting in increasing speed average of memory?",
+                options: [
+                    "SSD Main Memory Cache Memory Magnetic Tape",
+                    "Magnetic Tape SSD Cache Memory Main Memory",
+                    "Magnetic Disk SSD Cache Memory Main Memory",
+                    "Magnetic Disk Magnetic Tape Main Memory Cache Memory",
+                    "Magnetic Disk SSD Main Memory Cache Memory"
+                ],
+                correct: 4,
+                type: "single",
+                explanation: "Thứ tự tốc độ tăng dần: Magnetic Disk → SSD → Main Memory → Cache Memory."
+            },
+            {
+                id: 21,
+                question: "For the following Boolean expressions: AB + AB' and the truth table, Choose the correct option to replace at \"?\" (order top to bottom)",
+                options: [
+                    "1,1,1,0",
+                    "1,1,1,1",
+                    "1,0,1,0",
+                    "0,1,1,0"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Với biểu thức AB + AB' = A(B + B') = A. Khi A=1, kết quả là 1; khi A=0, kết quả là 0. Vậy đáp án là 1,0,1,0."
+            },
+            {
+                id: 22,
+                question: "If you have a boolean function with 3 variables, how may rows are there in the truth table?",
+                options: [
+                    "8 rows",
+                    "3 rows",
+                    "6 rows",
+                    "12 rows"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Với 3 biến boolean, bảng chân trị có 2³ = 8 hàng. Công thức: 2^(số biến) = số hàng trong truth table."
+            },
+            {
+                id: 23,
+                question: "In isolated I/O",
+                options: [
+                    "The I/O devices and the memory share the same address space",
+                    "The I/O devices have a separate address space from memory",
+                    "The memory and I/O devices have an associated address space",
+                    "A part of the memory is specifically set aside for the I/O operation",
+                    "None of the mentioned"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Trong isolated I/O, các thiết bị I/O có không gian địa chỉ riêng biệt với memory, khác với memory-mapped I/O."
+            },
+            {
+                id: 24,
+                question: "Which component defines the system call interface to the operating system and facilitates binary portability?",
+                options: [
+                    "Application Binary Interface",
+                    "Application Programming Interface",
+                    "Instruction Set Architecture",
+                    "Central Processing Unit"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "ABI (Application Binary Interface) định nghĩa giao diện system call với hệ điều hành và hỗ trợ tính di động của binary."
+            },
+            {
+                id: 25,
+                question: "What is the initial state of a process when it is admitted by the high-level scheduler, but not yet ready to execute?",
+                options: [
+                    "New",
+                    "Ready",
+                    "Running",
+                    "Halted"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Trạng thái ban đầu của process khi được high-level scheduler chấp nhận nhưng chưa sẵn sàng thực thi là New."
+            },
+            {
+                id: 26,
+                question: "The chunks of a program, known as pages, could be assigned to available chunks of memory, known as frames, is called",
+                options: [
+                    "Swapping",
+                    "Partitioning",
+                    "Paging",
+                    "Virtual Memory",
+                    "Segmentation"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Quá trình gán các pages (chunks của chương trình) vào các frames (chunks của memory) được gọi là Paging."
+            },
+            {
+                id: 27,
+                question: "How does Boolean algebra contribute to the design of digital circuits?",
+                options: [
+                    "It simplifies the implementation of desired functions",
+                    "It helps in the analysis of economic data",
+                    "It facilitates the design of analog circuits",
+                    "It is primarily used for chemical engineering and physical engineering"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Boolean algebra đóng góp vào thiết kế mạch số bằng cách đơn giản hóa việc triển khai các hàm mong muốn."
+            },
+            {
+                id: 28,
+                question: "When both inputs are 1, what is the result of a NAND gate?",
+                options: [
+                    "0",
+                    "1",
+                    "2",
+                    "Undefined",
+                    "#NA"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "NAND gate với cả hai đầu vào là 1 sẽ cho đầu ra là 0. NAND = NOT AND, nên NOT(1 AND 1) = NOT(1) = 0."
+            },
+            {
+                id: 29,
+                question: "Express a sign integer number (+18) in the sign magnitude representation.",
+                options: [
+                    "00010010",
+                    "10010010",
+                    "11110010",
+                    "01110010"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "+18 trong sign magnitude: bit đầu là 0 (dương), 7 bit còn lại biểu diễn 18 = 0010010. Kết quả: 00010010."
+            },
+            {
+                id: 30,
+                question: "Why is it essential to use symbolic representation of machine instructions?",
+                options: [
+                    "It makes machine instructions more human-readable and understandable",
+                    "It reduces the overall complexity of computer systems and user programs",
+                    "It minimizes the need for memory storage for the user programs",
+                    "It enables fastest execution of high level language instructions"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Biểu diễn ký hiệu làm cho lệnh máy dễ đọc và hiểu hơn cho con người, thay vì làm việc với mã nhị phân phức tạp."
+            },
+            {
+                id: 31,
+                question: "The hardware mechanism that allows a device to notify the CPU is called",
+                options: [
+                    "polling",
+                    "interrupt",
+                    "driver",
+                    "controlling"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Interrupt là cơ chế phần cứng cho phép thiết bị thông báo với CPU, khác với polling là CPU chủ động kiểm tra."
+            },
+            {
+                id: 32,
+                question: "What is a branch instruction?",
+                options: [
+                    "The instructions that are used to divide a program into multiple subprograms",
+                    "The instructions that have as one of its operands the address of the next instruction to be executed",
+                    "The instructions that are used to pause the program",
+                    "The instructions that are used to return to the beginning of the program"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Branch instruction là lệnh có một trong các toán hạng là địa chỉ của lệnh tiếp theo cần thực thi, cho phép thay đổi luồng chương trình."
+            },
+            {
+                id: 33,
+                question: "The effective address of EA = A + (R), (R) → (R) + 1 is",
+                options: [
+                    "relative addressing",
+                    "autoindexing",
+                    "postindexing",
+                    "preindexing"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Với EA = A + (R) và (R) → (R) + 1, đây là postindexing - tính địa chỉ hiệu quả trước, sau đó tăng giá trị register."
+            },
+            {
+                id: 34,
+                question: "In MASM32, which OPCODE is used to compare two values?",
+                options: [
+                    "COM",
+                    "CMP",
+                    "IF... ELSE",
+                    "TEST"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Trong MASM32, opcode CMP được sử dụng để so sánh hai giá trị và set flags tương ứng."
+            },
+            {
+                id: 35,
+                question: "What is the role of the control unit in a processor?",
+                options: [
+                    "The control unit's primary role is to perform arithmetic and logical operations within the processor, orchestrating the manipulation of data",
+                    "The control unit only manages the flow of data between the CPU and external devices and does not play a significant role in executing instructions",
+                    "The control unit is solely responsible for managing the flow of instructions from secondary storage to RAM and does not have a role in the internal operation of the CPU",
+                    "The control unit in a processor directs and coordinates the execution of instructions, interpreting and managing the flow of operations within the CPU"
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "Control unit điều hướng và phối hợp việc thực thi lệnh, diễn giải và quản lý luồng thao tác trong CPU."
+            },
+            {
+                id: 36,
+                question: "How do data registers and address registers differ in some computer systems?",
+                options: [
+                    "Address registers can be employed in calculating operand addresses, while data registers hold data.",
+                    "Data registers are only used for stack-related operations",
+                    "Data registers are used for indexed addressing, while address registers are used for data storage",
+                    "Address registers are reserved for segmented addressing, while data registers are general-purpose"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Address registers được dùng để tính toán địa chỉ toán hạng, trong khi data registers chứa dữ liệu."
+            },
+            {
+                id: 37,
+                question: "What is the main benefit of using ARM processors over other processors?",
+                options: [
+                    "Low cost and low power consumption",
+                    "Higher degree of multi-tasking",
+                    "Lower error or glitches",
+                    "Efficient memory management"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "ARM processors có lợi thế chính là chi phí thấp và tiêu thụ điện năng thấp, phù hợp cho thiết bị di động."
+            },
+            {
+                id: 38,
+                question: "Which statement is incorrect about RISC and CISC architecture?",
+                options: [
+                    "CISC architecture is more convenient for programmers than RISC architecture.",
+                    "CISC architecture has more operands in an instruction compared to RISC architecture.",
+                    "CISC architecture has a more flexible instruction set than RISC architecture.",
+                    "CISC architecture requires more general-purpose registers than RISC architecture."
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "❌ Câu D sai. CISC thực tế cần ít register hơn RISC. RISC cần nhiều register hơn do các lệnh đơn giản và cần lưu trữ dữ liệu tạm thời."
+            },
+            {
+                id: 39,
+                question: "What is the purpose of the instruction pointer (IP) register?",
+                options: [
+                    "To store the address of the next instruction to be executed",
+                    "To store the result of arithmetic operations",
+                    "To store temporary data during processing",
+                    "To store the address of the current data being processed"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Instruction Pointer (IP) lưu trữ địa chỉ của lệnh tiếp theo sẽ được thực thi, đóng vai trò quan trọng trong việc điều khiển luồng chương trình."
+            },
+            {
+                id: 40,
+                question: "In computer memory hierarchy, which level provides the best balance between speed and cost?",
+                options: [
+                    "Registers",
+                    "Cache memory",
+                    "Main memory (RAM)",
+                    "Secondary storage"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Main memory (RAM) cung cấp sự cân bằng tốt nhất giữa tốc độ và chi phí trong hệ thống phân cấp bộ nhớ."
+            },
+            {
+                id: 41,
+                question: "What are the main characteristics of RISC architecture? (choose 3 correct answers)",
+                options: [
+                    "Simple instruction set",
+                    "Complex addressing modes",
+                    "Large number of registers",
+                    "Fixed instruction length",
+                    "Microcode implementation"
+                ],
+                correct: [0, 2, 3],
+                type: "multiple",
+                explanation: "RISC architecture đặc trưng bởi: Simple instruction set, Large number of registers, và Fixed instruction length."
+            },
+            {
+                id: 42,
+                question: "Which addressing mode uses the content of a register as the effective address?",
+                options: [
+                    "Immediate addressing",
+                    "Direct addressing",
+                    "Register indirect addressing",
+                    "Relative addressing"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Register indirect addressing sử dụng nội dung của register làm địa chỉ hiệu quả để truy cập dữ liệu."
+            },
+            {
+                id: 43,
+                question: "What is the main advantage of pipelined instruction execution?",
+                options: [
+                    "Reduces memory usage",
+                    "Increases instruction throughput",
+                    "Simplifies instruction decoding",
+                    "Eliminates cache misses"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Pipeline execution tăng throughput của lệnh bằng cách cho phép thực thi nhiều lệnh đồng thời ở các giai đoạn khác nhau."
+            },
+            {
+                id: 44,
+                question: "In virtual memory systems, what happens when a page fault occurs?",
+                options: [
+                    "The system crashes",
+                    "The page is loaded from secondary storage to main memory",
+                    "The program is terminated",
+                    "The cache is cleared"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Khi page fault xảy ra, hệ thống sẽ load page từ secondary storage vào main memory để tiếp tục thực thi."
+            },
+            {
+                id: 45,
+                question: "Which components are essential for implementing virtual memory? (choose 2 correct answers)",
+                options: [
+                    "Translation Lookaside Buffer (TLB)",
+                    "Memory Management Unit (MMU)",
+                    "Arithmetic Logic Unit (ALU)",
+                    "Floating Point Unit (FPU)"
+                ],
+                correct: [0, 1],
+                type: "multiple",
+                explanation: "Virtual memory cần TLB (Translation Lookaside Buffer) và MMU (Memory Management Unit) để thực hiện việc dịch địa chỉ hiệu quả."
+            },
+            {
+                id: 46,
+                question: "What is the primary function of a compiler in the software development process?",
+                options: [
+                    "To execute programs directly",
+                    "To translate high-level language to machine code",
+                    "To manage memory allocation",
+                    "To handle input/output operations"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Compiler có chức năng chính là dịch ngôn ngữ bậc cao thành mã máy để CPU có thể thực thi."
+            },
+            {
+                id: 47,
+                question: "In floating-point representation, what does the mantissa represent?",
+                options: [
+                    "The sign of the number",
+                    "The exponent part",
+                    "The significant digits of the number",
+                    "The base of the number system"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Mantissa biểu diễn các chữ số có nghĩa của số trong biểu diễn floating-point, quyết định độ chính xác của số."
+            },
+            {
+                id: 48,
+                question: "What are the main benefits of using cache memory? (choose 3 correct answers)",
+                options: [
+                    "Reduces average memory access time",
+                    "Increases storage capacity",
+                    "Improves system performance",
+                    "Reduces memory bandwidth requirements",
+                    "Eliminates the need for main memory"
+                ],
+                correct: [0, 2, 3],
+                type: "multiple",
+                explanation: "Cache memory mang lại lợi ích: giảm thời gian truy cập bộ nhớ trung bình, cải thiện hiệu suất hệ thống, và giảm yêu cầu băng thông bộ nhớ."
+            },
+            {
+                id: 49,
+                question: "What is the difference between little-endian and big-endian byte ordering?",
+                options: [
+                    "Little-endian stores the least significant byte first, big-endian stores the most significant byte first",
+                    "Little-endian stores the most significant byte first, big-endian stores the least significant byte first",
+                    "Both store bytes in the same order",
+                    "The difference is only in memory alignment"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Little-endian lưu byte ít quan trọng nhất trước, big-endian lưu byte quan trọng nhất trước. Đây là cách sắp xếp byte trong bộ nhớ."
+            },
+            {
+                id: 50,
+                question: "Which factors affect CPU performance? (choose 4 correct answers)",
+                options: [
+                    "Clock frequency",
+                    "Number of cores",
+                    "Cache size and organization",
+                    "Instruction set architecture",
+                    "Color of the CPU package",
+                    "Pipeline depth"
+                ],
+                correct: [0, 1, 2, 3],
+                type: "multiple",
+                explanation: "Hiệu suất CPU bị ảnh hưởng bởi: tần số clock, số lõi, kích thước và tổ chức cache, kiến trúc tập lệnh. Màu sắc CPU không ảnh hưởng đến hiệu suất!"
+            }
+        ];
+
+        let userAnswers = {};
+        let showingAnswers = false;
+
+        function initQuiz() {
+            renderAllQuestions();
+            updateScoreSummary();
+        }
+
+        function renderAllQuestions() {
+            const quizContent = document.getElementById('quizContent');
+            
+            quizContent.innerHTML = questions.map(question => `
+                <div class="question-item" id="question-${question.id}">
+                    <div class="question-header">
+                        <div class="question-number">Câu ${question.id}</div>
+                        <div class="question-status" id="status-${question.id}">❓</div>
+                    </div>
+                    
+                    <div class="question-text">${question.question}</div>
+                    
+                    <div class="options-container">
+                        ${question.options.map((option, index) => `
+                            <div class="option-item" onclick="selectOption(${question.id}, ${index})">
+                                ${question.type === 'multiple' ? 
+                                    `<input type="checkbox" class="option-checkbox" id="q${question.id}-opt${index}" onchange="selectOption(${question.id}, ${index})">` :
+                                    `<input type="radio" name="q${question.id}" class="option-radio" id="q${question.id}-opt${index}" onchange="selectOption(${question.id}, ${index})">`
+                                }
+                                <label class="option-text" for="q${question.id}-opt${index}">
+                                    ${String.fromCharCode(65 + index)}. ${option}
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="explanation" id="explanation-${question.id}">
+                        <h4><span class="icon">💡</span>Giải thích:</h4>
+                        <p>${question.explanation}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectOption(questionId, optionIndex) {
+            const question = questions.find(q => q.id === questionId);
+            const questionElement = document.getElementById(`question-${questionId}`);
+            const optionElement = document.getElementById(`q${questionId}-opt${optionIndex}`);
+            
+            if (showingAnswers) return; // Prevent changes when answers are shown
+            
+            if (question.type === 'multiple') {
+                // Handle multiple choice
+                if (!userAnswers[questionId]) {
+                    userAnswers[questionId] = [];
+                }
+                
+                if (optionElement.checked) {
+                    if (!userAnswers[questionId].includes(optionIndex)) {
+                        userAnswers[questionId].push(optionIndex);
+                    }
+                } else {
+                    userAnswers[questionId] = userAnswers[questionId].filter(idx => idx !== optionIndex);
+                }
+                
+                // Check if user has selected the correct number of answers for multiple choice
+                const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
+                if (userAnswers[questionId] && userAnswers[questionId].length === correctAnswers.length) {
+                    showQuestionFeedback(questionId);
+                } else {
+                    hideQuestionFeedback(questionId);
+                }
+            } else {
+                // Handle single choice
+                userAnswers[questionId] = optionIndex;
+                // Show feedback immediately for single choice
+                showQuestionFeedback(questionId);
+            }
+            
+            updateQuestionStatus(questionId);
+            updateScoreSummary();
+        }
+
+        function showQuestionFeedback(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            const explanationElement = document.getElementById(`explanation-${questionId}`);
+            const isCorrect = checkAnswer(questionId);
+            
+            // Show explanation
+            explanationElement.classList.add('show');
+            
+            // Update option styling to show correct/incorrect
+            const optionElements = document.querySelectorAll(`[id^="q${questionId}-opt"]`);
+            optionElements.forEach((element, index) => {
+                const optionContainer = element.parentElement;
+                optionContainer.classList.remove('correct', 'incorrect', 'user-selected', 'user-incorrect');
+                
+                // Remove existing indicators
+                const existingIndicator = optionContainer.querySelector('.answer-indicator');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+                
+                const userAnswer = userAnswers[questionId];
+                const isUserSelection = question.type === 'multiple' ? 
+                    (userAnswer && userAnswer.includes(index)) : 
+                    (userAnswer === index);
+                
+                if (question.type === 'multiple') {
+                    const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
+                    
+                    if (correctAnswers.includes(index)) {
+                        // This is a correct answer
+                        optionContainer.classList.add('correct');
+                        const indicator = document.createElement('span');
+                        indicator.className = 'answer-indicator correct-indicator';
+                        indicator.textContent = isUserSelection ? '✓ Đúng' : '✓ Đáp án đúng';
+                        optionContainer.appendChild(indicator);
+                    } else if (isUserSelection) {
+                        // User selected wrong answer
+                        optionContainer.classList.add('user-incorrect');
+                        const indicator = document.createElement('span');
+                        indicator.className = 'answer-indicator incorrect-indicator';
+                        indicator.textContent = '✗ Sai';
+                        optionContainer.appendChild(indicator);
+                    }
+                } else {
+                    if (index === question.correct) {
+                        // This is the correct answer
+                        optionContainer.classList.add('correct');
+                        const indicator = document.createElement('span');
+                        indicator.className = 'answer-indicator correct-indicator';
+                        indicator.textContent = isUserSelection ? '✓ Đúng' : '✓ Đáp án đúng';
+                        optionContainer.appendChild(indicator);
+                    } else if (isUserSelection) {
+                        // User selected wrong answer
+                        optionContainer.classList.add('user-incorrect');
+                        const indicator = document.createElement('span');
+                        indicator.className = 'answer-indicator incorrect-indicator';
+                        indicator.textContent = '✗ Sai';
+                        optionContainer.appendChild(indicator);
+                    }
+                }
+            });
+        }
+
+        function hideQuestionFeedback(questionId) {
+            const explanationElement = document.getElementById(`explanation-${questionId}`);
+            explanationElement.classList.remove('show');
+            
+            // Remove feedback styling from options
+            const optionElements = document.querySelectorAll(`[id^="q${questionId}-opt"]`);
+            optionElements.forEach((element, index) => {
+                const optionContainer = element.parentElement;
+                optionContainer.classList.remove('correct', 'incorrect', 'user-selected', 'user-incorrect');
+                
+                // Remove existing indicators
+                const existingIndicator = optionContainer.querySelector('.answer-indicator');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+            });
+        }
+
+        function updateQuestionStatus(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            const statusElement = document.getElementById(`status-${questionId}`);
+            const questionElement = document.getElementById(`question-${questionId}`);
+            
+            // Check if question is properly answered
+            let isAnswered = false;
+            if (question.type === 'multiple') {
+                const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
+                isAnswered = userAnswers[questionId] && userAnswers[questionId].length === correctAnswers.length;
+            } else {
+                isAnswered = userAnswers[questionId] !== undefined;
+            }
+            
+            if (isAnswered) {
+                if (showingAnswers || hasQuestionFeedback(questionId)) {
+                    const isCorrect = checkAnswer(questionId);
+                    statusElement.textContent = isCorrect ? '✅' : '❌';
+                    questionElement.className = `question-item ${isCorrect ? 'answered' : 'incorrect'}`;
+                } else {
+                    statusElement.textContent = '✏️';
+                    questionElement.className = 'question-item answered';
+                }
+            } else {
+                statusElement.textContent = '❓';
+                questionElement.className = 'question-item';
+            }
+        }
+
+        function hasQuestionFeedback(questionId) {
+            const explanationElement = document.getElementById(`explanation-${questionId}`);
+            return explanationElement.classList.contains('show');
+        }
+
+        function checkAnswer(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            const userAnswer = userAnswers[questionId];
+            
+            if (question.type === 'multiple') {
+                if (!userAnswer || userAnswer.length === 0) return false;
+                const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
+                return userAnswer.length === correctAnswers.length && 
+                       userAnswer.every(ans => correctAnswers.includes(ans));
+            } else {
+                return userAnswer === question.correct;
+            }
+        }
+
+        function updateScoreSummary() {
+            const answeredCount = Object.keys(userAnswers).filter(qId => {
+                const question = questions.find(q => q.id == qId);
+                const answer = userAnswers[qId];
+                return answer !== undefined && 
+                       (question.type === 'single' || (question.type === 'multiple' && answer.length > 0));
+            }).length;
+            
+            const correctCount = Object.keys(userAnswers).filter(qId => checkAnswer(parseInt(qId))).length;
+            const percentage = answeredCount > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            
+            document.getElementById('answeredCount').textContent = answeredCount;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('scorePercentage').textContent = percentage + '%';
+        }
+
+        function showAllAnswers() {
+            showingAnswers = true;
+            
+            questions.forEach(question => {
+                const explanationElement = document.getElementById(`explanation-${question.id}`);
+                explanationElement.classList.add('show');
+                
+                // Highlight correct answers only
+                const optionElements = document.querySelectorAll(`[id^="q${question.id}-opt"]`);
+                optionElements.forEach((element, index) => {
+                    const optionContainer = element.parentElement;
+                    optionContainer.classList.remove('correct', 'incorrect', 'selected', 'user-selected', 'user-incorrect');
+                    
+                    // Remove existing indicators
+                    const existingIndicator = optionContainer.querySelector('.answer-indicator');
+                    if (existingIndicator) {
+                        existingIndicator.remove();
+                    }
+                    
+                    if (question.type === 'multiple') {
+                        const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
+                        if (correctAnswers.includes(index)) {
+                            optionContainer.classList.add('correct');
+                            const indicator = document.createElement('span');
+                            indicator.className = 'answer-indicator correct-indicator';
+                            indicator.textContent = '✓ Đúng';
+                            optionContainer.appendChild(indicator);
+                        }
+                    } else {
+                        if (index === question.correct) {
+                            optionContainer.classList.add('correct');
+                            const indicator = document.createElement('span');
+                            indicator.className = 'answer-indicator correct-indicator';
+                            indicator.textContent = '✓ Đáp án đúng';
+                            optionContainer.appendChild(indicator);
+                        }
+                    }
+                    
+                    // Disable further interactions
+                    element.disabled = true;
+                });
+                
+                updateQuestionStatus(question.id);
+            });
+            
+            updateScoreSummary();
+        }
+
+        function checkAllAnswers() {
+            showingAnswers = true;
+            
+            questions.forEach(question => {
+                const explanationElement = document.getElementById(`explanation-${question.id}`);
+                explanationElement.classList.add('show');
+                
+                // Show user answers vs correct answers
+                const optionElements = document.querySelectorAll(`[id^="q${question.id}-opt"]`);
+                optionElements.forEach((element, index) => {
+                    const optionContainer = element.parentElement;
+                    optionContainer.classList.remove('correct', 'incorrect', 'selected', 'user-selected', 'user-incorrect');
+                    
+                    // Remove existing indicators
+                    const existingIndicator = optionContainer.querySelector('.answer-indicator');
+                    if (existingIndicator) {
+                        existingIndicator.remove();
+                    }
+                    
+                    const userAnswer = userAnswers[question.id];
+                    const isUserSelection = question.type === 'multiple' ? 
+                        (userAnswer && userAnswer.includes(index)) : 
+                        (userAnswer === index);
+                    
+                    if (question.type === 'multiple') {
+                        const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
+                        
+                        if (correctAnswers.includes(index)) {
+                            // This is a correct answer
+                            optionContainer.classList.add('correct');
+                            const indicator = document.createElement('span');
+                            indicator.className = 'answer-indicator correct-indicator';
+                            indicator.textContent = isUserSelection ? '✓ Đúng - Bạn đã chọn' : '✓ Đáp án đúng';
+                            optionContainer.appendChild(indicator);
+                        } else if (isUserSelection) {
+                            // User selected wrong answer
+                            optionContainer.classList.add('user-incorrect');
+                            const indicator = document.createElement('span');
+                            indicator.className = 'answer-indicator incorrect-indicator';
+                            indicator.textContent = '✗ Sai - Bạn đã chọn';
+                            optionContainer.appendChild(indicator);
+                        }
+                    } else {
+                        if (index === question.correct) {
+                            // This is the correct answer
+                            optionContainer.classList.add('correct');
+                            const indicator = document.createElement('span');
+                            indicator.className = 'answer-indicator correct-indicator';
+                            indicator.textContent = isUserSelection ? '✓ Đúng - Bạn đã chọn' : '✓ Đáp án đúng';
+                            optionContainer.appendChild(indicator);
+                        } else if (isUserSelection) {
+                            // User selected wrong answer
+                            optionContainer.classList.add('user-incorrect');
+                            const indicator = document.createElement('span');
+                            indicator.className = 'answer-indicator incorrect-indicator';
+                            indicator.textContent = '✗ Sai - Bạn đã chọn';
+                            optionContainer.appendChild(indicator);
+                        }
+                    }
+                    
+                    // Disable further interactions
+                    element.disabled = true;
+                });
+                
+                updateQuestionStatus(question.id);
+            });
+            
+            updateScoreSummary();
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            showingAnswers = false;
+            
+            // Reset all form elements
+            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+                input.checked = false;
+                input.disabled = false;
+            });
+            
+            // Hide all explanations and feedback
+            questions.forEach(question => {
+                hideQuestionFeedback(question.id);
+            });
+            
+            // Reset all option styling and remove indicators
+            document.querySelectorAll('.option-item').forEach(option => {
+                option.classList.remove('correct', 'incorrect', 'selected', 'user-selected', 'user-incorrect');
+                const indicator = option.querySelector('.answer-indicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            });
+            
+            // Update all question statuses
+            questions.forEach(question => {
+                updateQuestionStatus(question.id);
+            });
+            
+            updateScoreSummary();
+        }
+
+        // Initialize quiz when page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
