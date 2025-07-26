@@ -33,9 +33,6 @@
             color: white;
             padding: 30px;
             text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .quiz-header h1 {
@@ -74,8 +71,6 @@
 
         .quiz-content {
             padding: 40px;
-            max-height: 70vh;
-            overflow-y: auto;
         }
 
         .question-item {
@@ -227,8 +222,6 @@
         }
 
         .action-buttons {
-            position: sticky;
-            bottom: 0;
             background: white;
             padding: 20px 40px;
             border-top: 2px solid #eee;
@@ -277,25 +270,6 @@
 
         .icon {
             margin-right: 8px;
-        }
-
-        /* Scrollbar styling */
-        .quiz-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .quiz-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .quiz-content::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 4px;
-        }
-
-        .quiz-content::-webkit-scrollbar-thumb:hover {
-            background: #5a6fd8;
         }
     </style>
 </head>
@@ -984,9 +958,9 @@
                     "317%",
                     "327%"
                 ],
-                correct: 2,
+                correct: 0,
                 type: "single",
-                explanation: "Theo định luật Amdahl, với f = 0.9 (90% song song) và 4 processors, speedup = 1/(0.1 + 0.9/4) = 1/0.325 ≈ 3.17 = 317%."
+                explanation: "Theo định luật Amdahl, với f = 0.9 (90% song song) và 4 processors, speedup = 1/(0.1 + 0.9/4) = 1/0.325 ≈ 3.07 = 307%."
             },
             {
                 id: 50,
@@ -1005,6 +979,7 @@
 
         let userAnswers = {};
         let showingAnswers = false;
+        let answeredQuestions = new Set(); // Add tracking
 
         function initQuiz() {
             renderAllQuestions();
@@ -1046,11 +1021,16 @@
         }
 
         function selectOption(questionId, optionIndex) {
+            // Prevent changes if question already answered
+            if (answeredQuestions.has(questionId)) {
+                return;
+            }
+            
             const question = questions.find(q => q.id === questionId);
             const questionElement = document.getElementById(`question-${questionId}`);
             const optionElement = document.getElementById(`q${questionId}-opt${optionIndex}`);
             
-            if (showingAnswers) return; // Prevent changes when answers are shown
+            if (showingAnswers) return;
             
             if (question.type === 'multiple') {
                 // Handle multiple choice
@@ -1069,19 +1049,31 @@
                 // Check if user has selected the correct number of answers for multiple choice
                 const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
                 if (userAnswers[questionId] && userAnswers[questionId].length === correctAnswers.length) {
+                    answeredQuestions.add(questionId);
+                    disableQuestionOptions(questionId);
                     showQuestionFeedback(questionId);
                 } else {
                     hideQuestionFeedback(questionId);
                 }
             } else {
-                // Handle single choice
+                // Handle single choice - lock immediately
                 userAnswers[questionId] = optionIndex;
-                // Show feedback immediately for single choice
+                answeredQuestions.add(questionId);
+                disableQuestionOptions(questionId);
                 showQuestionFeedback(questionId);
             }
             
             updateQuestionStatus(questionId);
             updateScoreSummary();
+        }
+
+        function disableQuestionOptions(questionId) {
+            const optionElements = document.querySelectorAll(`[id^="q${questionId}-opt"]`);
+            optionElements.forEach(element => {
+                element.disabled = true;
+                element.parentElement.style.pointerEvents = 'none';
+                element.parentElement.style.opacity = '0.7';
+            });
         }
 
         function showQuestionFeedback(questionId) {
@@ -1350,11 +1342,14 @@
         function resetQuiz() {
             userAnswers = {};
             showingAnswers = false;
+            answeredQuestions.clear();
             
             // Reset all form elements
             document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
                 input.checked = false;
                 input.disabled = false;
+                input.parentElement.style.pointerEvents = 'auto';
+                input.parentElement.style.opacity = '1';
             });
             
             // Hide all explanations and feedback
