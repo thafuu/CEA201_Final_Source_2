@@ -33,9 +33,6 @@
             color: white;
             padding: 30px;
             text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .quiz-header h1 {
@@ -74,8 +71,6 @@
 
         .quiz-content {
             padding: 40px;
-            max-height: 70vh;
-            overflow-y: auto;
         }
 
         .question-item {
@@ -227,8 +222,6 @@
         }
 
         .action-buttons {
-            position: sticky;
-            bottom: 0;
             background: white;
             padding: 20px 40px;
             border-top: 2px solid #eee;
@@ -277,25 +270,6 @@
 
         .icon {
             margin-right: 8px;
-        }
-
-        /* Scrollbar styling */
-        .quiz-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .quiz-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .quiz-content::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 4px;
-        }
-
-        .quiz-content::-webkit-scrollbar-thumb:hover {
-            background: #5a6fd8;
         }
     </style>
 </head>
@@ -608,9 +582,9 @@
                     "Magnetic Disk Magnetic Tape Main Memory Cache Memory",
                     "Magnetic Disk SSD Main Memory Cache Memory"
                 ],
-                correct: 4,
+                correct: 2,
                 type: "single",
-                explanation: "Thứ tự tốc độ tăng dần: Magnetic Disk → SSD → Main Memory → Cache Memory."
+                explanation: "Thứ tự tốc độ tăng dần: Magnetic Disk → SSD → Cache Memory → Main Memory."
             },
             {
                 id: 21,
@@ -780,9 +754,9 @@
                     "postindexing",
                     "preindexing"
                 ],
-                correct: 2,
+                correct: 1,
                 type: "single",
-                explanation: "Với EA = A + (R) và (R) → (R) + 1, đây là postindexing - tính địa chỉ hiệu quả trước, sau đó tăng giá trị register."
+                explanation: "Địa chỉ hiệu quả EA = A + (R) với thao tác R ← R + 1 là chế độ định địa chỉ hậu tăng (auto-increment addressing), trong đó địa chỉ được tính bằng cách cộng hằng số A với nội dung thanh ghi R, sau đó tự động tăng giá trị của R lên sau khi truy xuất."
             },
             {
                 id: 34,
@@ -851,168 +825,166 @@
             },
             {
                 id: 39,
-                question: "What is the purpose of the instruction pointer (IP) register?",
+                question: "In the concept of Register Windows, how many register groups are there?",
                 options: [
-                    "To store the address of the next instruction to be executed",
-                    "To store the result of arithmetic operations",
-                    "To store temporary data during processing",
-                    "To store the address of the current data being processed"
+                    "4",
+                    "3",
+                    "2",
+                    "No distinction"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "Instruction Pointer (IP) lưu trữ địa chỉ của lệnh tiếp theo sẽ được thực thi, đóng vai trò quan trọng trong việc điều khiển luồng chương trình."
+                explanation: "Register Windows sử dụng 4 nhóm thanh ghi để tăng tốc quá trình chuyển đổi ngữ cảnh."
             },
             {
                 id: 40,
-                question: "In computer memory hierarchy, which level provides the best balance between speed and cost?",
+                question: "What is the main benefit of using RISC over CISC?",
                 options: [
-                    "Registers",
-                    "Cache memory",
-                    "Main memory (RAM)",
-                    "Secondary storage"
+                    "RISC has more instructions and addressing modes than CISC",
+                    "RISC has faster instruction execution and simpler instruction decoding than CISC",
+                    "RISC has variable-length instruction formats and direct memory access than CISC",
+                    "RISC has more registers and pipelines than CISC"
                 ],
-                correct: 2,
+                correct: 1,
                 type: "single",
-                explanation: "Main memory (RAM) cung cấp sự cân bằng tốt nhất giữa tốc độ và chi phí trong hệ thống phân cấp bộ nhớ."
+                explanation: "RISC có các lệnh đơn giản và dễ giải mã, giúp giảm độ trễ và tăng tốc thực thi."
             },
             {
                 id: 41,
-                question: "What are the main characteristics of RISC architecture? (choose 3 correct answers)",
+                question: "What is the benefit of using a superscalar organization over a scalar organization?",
                 options: [
-                    "Simple instruction set",
-                    "Complex addressing modes",
-                    "Large number of registers",
-                    "Fixed instruction length",
-                    "Microcode implementation"
-                ],
-                correct: [0, 2, 3],
-                type: "multiple",
-                explanation: "RISC architecture đặc trưng bởi: Simple instruction set, Large number of registers, và Fixed instruction length."
-            },
-            {
-                id: 42,
-                question: "Which addressing mode uses the content of a register as the effective address?",
-                options: [
-                    "Immediate addressing",
-                    "Direct addressing",
-                    "Register indirect addressing",
-                    "Relative addressing"
-                ],
-                correct: 2,
-                type: "single",
-                explanation: "Register indirect addressing sử dụng nội dung của register làm địa chỉ hiệu quả để truy cập dữ liệu."
-            },
-            {
-                id: 43,
-                question: "What is the main advantage of pipelined instruction execution?",
-                options: [
-                    "Reduces memory usage",
-                    "Increases instruction throughput",
-                    "Simplifies instruction decoding",
-                    "Eliminates cache misses"
-                ],
-                correct: 1,
-                type: "single",
-                explanation: "Pipeline execution tăng throughput của lệnh bằng cách cho phép thực thi nhiều lệnh đồng thời ở các giai đoạn khác nhau."
-            },
-            {
-                id: 44,
-                question: "In virtual memory systems, what happens when a page fault occurs?",
-                options: [
-                    "The system crashes",
-                    "The page is loaded from secondary storage to main memory",
-                    "The program is terminated",
-                    "The cache is cleared"
-                ],
-                correct: 1,
-                type: "single",
-                explanation: "Khi page fault xảy ra, hệ thống sẽ load page từ secondary storage vào main memory để tiếp tục thực thi."
-            },
-            {
-                id: 45,
-                question: "Which components are essential for implementing virtual memory? (choose 2 correct answers)",
-                options: [
-                    "Translation Lookaside Buffer (TLB)",
-                    "Memory Management Unit (MMU)",
-                    "Arithmetic Logic Unit (ALU)",
-                    "Floating Point Unit (FPU)"
-                ],
-                correct: [0, 1],
-                type: "multiple",
-                explanation: "Virtual memory cần TLB (Translation Lookaside Buffer) và MMU (Memory Management Unit) để thực hiện việc dịch địa chỉ hiệu quả."
-            },
-            {
-                id: 46,
-                question: "What is the primary function of a compiler in the software development process?",
-                options: [
-                    "To execute programs directly",
-                    "To translate high-level language to machine code",
-                    "To manage memory allocation",
-                    "To handle input/output operations"
-                ],
-                correct: 1,
-                type: "single",
-                explanation: "Compiler có chức năng chính là dịch ngôn ngữ bậc cao thành mã máy để CPU có thể thực thi."
-            },
-            {
-                id: 47,
-                question: "In floating-point representation, what does the mantissa represent?",
-                options: [
-                    "The sign of the number",
-                    "The exponent part",
-                    "The significant digits of the number",
-                    "The base of the number system"
-                ],
-                correct: 2,
-                type: "single",
-                explanation: "Mantissa biểu diễn các chữ số có nghĩa của số trong biểu diễn floating-point, quyết định độ chính xác của số."
-            },
-            {
-                id: 48,
-                question: "What are the main benefits of using cache memory? (choose 3 correct answers)",
-                options: [
-                    "Reduces average memory access time",
-                    "Increases storage capacity",
-                    "Improves system performance",
-                    "Reduces memory bandwidth requirements",
-                    "Eliminates the need for main memory"
-                ],
-                correct: [0, 2, 3],
-                type: "multiple",
-                explanation: "Cache memory mang lại lợi ích: giảm thời gian truy cập bộ nhớ trung bình, cải thiện hiệu suất hệ thống, và giảm yêu cầu băng thông bộ nhớ."
-            },
-            {
-                id: 49,
-                question: "What is the difference between little-endian and big-endian byte ordering?",
-                options: [
-                    "Little-endian stores the least significant byte first, big-endian stores the most significant byte first",
-                    "Little-endian stores the most significant byte first, big-endian stores the least significant byte first",
-                    "Both store bytes in the same order",
-                    "The difference is only in memory alignment"
+                    "It increases the instruction throughput and improves the performance",
+                    "It reduces the power consumption and the heat dissipation",
+                    "It simplifies the instruction set and the compiler design",
+                    "All of the mentioned",
+                    "None of the mentioned"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "Little-endian lưu byte ít quan trọng nhất trước, big-endian lưu byte quan trọng nhất trước. Đây là cách sắp xếp byte trong bộ nhớ."
+                explanation: "Superscalar tổ chức có thể thực hiện nhiều chỉ thị đồng thời, giúp tăng thông lượng và cải thiện hiệu suất so với scalar, chỉ thực hiện một chỉ thị tại một thời điểm."
+            },
+            {
+                id: 42,
+                question: "What does the term \"instruction-level parallelism\" refer to in computer architecture?",
+                options: [
+                    "The degree to which instructions in a program can be executed in parallel",
+                    "The number of processor cores in a multi-core CPU with multiple resources",
+                    "The complexity of the instruction set architecture",
+                    "The length of an instruction cycle with high level programing language"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Instruction-level parallelism (ILP) là khả năng thực hiện nhiều chỉ thị cùng lúc trong một chu kỳ đồng hồ, nhằm tăng tốc độ xử lý chương trình."
+            },
+            {
+                id: 43,
+                question: "To enhance performance in a superscalar processor, which method(s) should we apply?",
+                options: [
+                    "Duplication of resources.",
+                    "Out-of-order issue.",
+                    "Renaming registers",
+                    "All of the mentioned."
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "Superscalar cải thiện hiệu suất bằng cách áp dụng phương pháp như sao chép tài nguyên, vấn đề ngoài thứ tự (out-of-order issue) và đổi tên thanh ghi."
+            },
+            {
+                id: 44,
+                question: "How many common classifications of parallel systems are there as proposed by Flynn?",
+                options: [
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Flynn phân loại hệ thống song song thành 4 loại chính: SISD, SIMD, MISD, MIMD."
+            },
+            {
+                id: 45,
+                question: "Which write technique in which all write operations are made to main memory as well as to the cache, ensuring that main memory is always valid.",
+                options: [
+                    "Write through",
+                    "Write back",
+                    "Write around",
+                    "No write allocate"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Write-through đảm bảo rằng mỗi ghi vào bộ nhớ cache cũng được sao chép vào bộ nhớ chính, giúp bộ nhớ chính luôn được cập nhật."
+            },
+            {
+                id: 46,
+                question: "How does multithreading improve the performance of a processor?",
+                options: [
+                    "It increases the instruction-level parallelism by issuing multiple instructions from different threads in the same cycle",
+                    "It increases the thread-level parallelism by executing multiple threads on different cores or processors",
+                    "It increases the utilization of the processor resources by hiding the latency of long-latency events such as cache misses or branch mispredictions",
+                    "All of the mentioned"
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "Multithreading tăng khả năng thực thi song song (tăng parallelism) và sử dụng tài nguyên hiệu quả hơn, giúp cải thiện hiệu suất tổng thể."
+            },
+            {
+                id: 47,
+                question: "Follow the Amdahl's law for multiprocessors, if only 10% of the code is inherently serial (f = 0.9), running the program on a multicore system with 4 processors, a performance gain (speedup factor) would be",
+                options: [
+                    "307%",
+                    "297%",
+                    "317%",
+                    "327%"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Theo định lý Amdahl, tốc độ tăng cường của một hệ thống đa lõi được tính theo công thức 1/((1-f) + f/n), với f=0.9 và n=4, ta tính được 307%."
+            },
+            {
+                id: 48,
+                question: "Which cache is not a shared cache?",
+                options: [
+                    "L4 cache",
+                    "L3 cache",
+                    "L2 cache",
+                    "L1 cache"
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "L1 cache là bộ nhớ cache gần CPU nhất, không chia sẻ giữa các lõi như L2, L3, hay L4."
+            },
+            {
+                id: 49,
+                question: "Central processing unit (CPU) of IAS computer consists of",
+                options: [
+                    "Main memory and ALU (arithmetic and logic unit)",
+                    "ALU (Arithmetic and Logic Unit) and CU (Control Unit)",
+                    "CU (Control Unit) and IO Module",
+                    "ALU (Arithmetic and Logic Unit) and IO Module"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "CPU của IAS máy tính bao gồm ALU (Arithmetic Logic Unit) và CU (Control Unit) để xử lý và điều khiển lệnh."
             },
             {
                 id: 50,
-                question: "Which factors affect CPU performance? (choose 4 correct answers)",
+                question: "What is the significance of the program counter (PC) in the fetch phase of the instruction cycle?",
                 options: [
-                    "Clock frequency",
-                    "Number of cores",
-                    "Cache size and organization",
-                    "Instruction set architecture",
-                    "Color of the CPU package",
-                    "Pipeline depth"
+                    "The program counter (PC) is not used in the fetch phase, and its role is limited to tracking the number of instructions executed by the CPU",
+                    "The program counter (PC) in the fetch phase holds the memory address of the next instruction to be fetched and executed",
+                    "The program counter (PC) is responsible for executing instructions and has no specific role during the fetch phase",
+                    "The program counter (PC) is only relevant in multi-core processors and does not contribute to the fetch phase of the instruction cycle in single-core systems"
                 ],
-                correct: [0, 1, 2, 3],
-                type: "multiple",
-                explanation: "Hiệu suất CPU bị ảnh hưởng bởi: tần số clock, số lõi, kích thước và tổ chức cache, kiến trúc tập lệnh. Màu sắc CPU không ảnh hưởng đến hiệu suất!"
+                correct: 1,
+                type: "single",
+                explanation: "Program Counter (PC) giữ địa chỉ của lệnh tiếp theo cần được lấy và thực thi trong chu kỳ lấy lệnh."
             }
         ];
 
         let userAnswers = {};
         let showingAnswers = false;
+        let answeredQuestions = new Set(); // Add tracking
 
         function initQuiz() {
             renderAllQuestions();
@@ -1054,11 +1026,12 @@
         }
 
         function selectOption(questionId, optionIndex) {
+            if (answeredQuestions.has(questionId)) return;
+            
             const question = questions.find(q => q.id === questionId);
-            const questionElement = document.getElementById(`question-${questionId}`);
             const optionElement = document.getElementById(`q${questionId}-opt${optionIndex}`);
             
-            if (showingAnswers) return; // Prevent changes when answers are shown
+            if (showingAnswers) return;
             
             if (question.type === 'multiple') {
                 // Handle multiple choice
@@ -1077,19 +1050,28 @@
                 // Check if user has selected the correct number of answers for multiple choice
                 const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
                 if (userAnswers[questionId] && userAnswers[questionId].length === correctAnswers.length) {
+                    answeredQuestions.add(questionId);
+                    disableQuestionOptions(questionId);
                     showQuestionFeedback(questionId);
-                } else {
-                    hideQuestionFeedback(questionId);
                 }
             } else {
-                // Handle single choice
                 userAnswers[questionId] = optionIndex;
-                // Show feedback immediately for single choice
+                answeredQuestions.add(questionId);
+                disableQuestionOptions(questionId);
                 showQuestionFeedback(questionId);
             }
             
             updateQuestionStatus(questionId);
             updateScoreSummary();
+        }
+
+        function disableQuestionOptions(questionId) {
+            const optionElements = document.querySelectorAll(`[id^="q${questionId}-opt"]`);
+            optionElements.forEach(element => {
+                element.disabled = true;
+                element.parentElement.style.pointerEvents = 'none';
+                element.parentElement.style.opacity = '0.7';
+            });
         }
 
         function showQuestionFeedback(questionId) {
@@ -1358,19 +1340,19 @@
         function resetQuiz() {
             userAnswers = {};
             showingAnswers = false;
+            answeredQuestions.clear();
             
-            // Reset all form elements
             document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
                 input.checked = false;
                 input.disabled = false;
+                input.parentElement.style.pointerEvents = 'auto';
+                input.parentElement.style.opacity = '1';
             });
             
-            // Hide all explanations and feedback
             questions.forEach(question => {
                 hideQuestionFeedback(question.id);
             });
             
-            // Reset all option styling and remove indicators
             document.querySelectorAll('.option-item').forEach(option => {
                 option.classList.remove('correct', 'incorrect', 'selected', 'user-selected', 'user-incorrect');
                 const indicator = option.querySelector('.answer-indicator');
@@ -1379,7 +1361,6 @@
                 }
             });
             
-            // Update all question statuses
             questions.forEach(question => {
                 updateQuestionStatus(question.id);
             });
@@ -1387,8 +1368,20 @@
             updateScoreSummary();
         }
 
-        // Initialize quiz when page loads
-        document.addEventListener('DOMContentLoaded', initQuiz);
+        // Error handling wrapper
+        function safeExecute(func, errorMessage) {
+            try {
+                return func();
+            } catch (error) {
+                console.error(errorMessage, error);
+                return null;
+            }
+        }
+
+        // Initialize quiz when page loads with error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            safeExecute(initQuiz, 'Error initializing quiz');
+        });
     </script>
 </body>
 </html>

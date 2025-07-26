@@ -33,9 +33,6 @@
             color: white;
             padding: 30px;
             text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .quiz-header h1 {
@@ -74,8 +71,6 @@
 
         .quiz-content {
             padding: 40px;
-            max-height: 70vh;
-            overflow-y: auto;
         }
 
         .question-item {
@@ -227,8 +222,6 @@
         }
 
         .action-buttons {
-            position: sticky;
-            bottom: 0;
             background: white;
             padding: 20px 40px;
             border-top: 2px solid #eee;
@@ -279,23 +272,16 @@
             margin-right: 8px;
         }
 
-        /* Scrollbar styling */
-        .quiz-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .quiz-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .quiz-content::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 4px;
-        }
-
-        .quiz-content::-webkit-scrollbar-thumb:hover {
-            background: #5a6fd8;
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .quiz-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .quiz-header h1 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
@@ -306,7 +292,7 @@
             <p>Computer Architecture - Student ID: 306561</p>
             <div class="score-summary">
                 <div class="score-item">
-                    <div class="score-number" id="totalQuestions">25</div>
+                    <div class="score-number" id="totalQuestions">50</div>
                     <div class="score-label">Tổng câu</div>
                 </div>
                 <div class="score-item">
@@ -347,333 +333,667 @@
         const questions = [
             {
                 id: 1,
-                question: "What is the correct order of memory access speed from fastest to slowest?",
+                question: "Which of the following components was used in the first ENIAC computer?",
                 options: [
-                    "Registers > Cache > RAM > SSD",
-                    "Cache > Registers > RAM > SSD", 
-                    "Registers > Cache > SSD > RAM",
-                    "Cache > Registers > SSD > RAM"
+                    "Bipolar transistors",
+                    "Field transistors",
+                    "Vacuum tubes",
+                    "Semiconductor ICs"
                 ],
-                correct: 0,
+                correct: 2,
                 type: "single",
-                explanation: "Thứ tự tốc độ truy cập bộ nhớ từ nhanh đến chậm: Register > Cache > RAM > SSD. Thanh ghi (Register) nhanh nhất, SSD chậm nhất."
+                explanation: "Máy tính ENIAC, một trong những máy tính điện tử đầu tiên, được chế tạo bằng ống chân không, vì vào thời điểm đó các transistor và mạch tích hợp (IC) chưa được phát minh."
             },
             {
                 id: 2,
-                question: "Choose the most basic four functions of a computer:",
+                question: "Which of the following statements is NOT part of the Von Neumann principle?",
                 options: [
-                    "Moving data, storing data, processing data, controlling",
-                    "Reading data, writing data, executing programs, managing files",
-                    "Input, output, processing, storage", 
-                    "Calculation, comparison, data transfer, program control"
+                    "Computers can operate according to a stored program",
+                    "The computer uses a program counter to indicate the location of the next statement",
+                    "A computer's memory is addressable",
+                    "Each statement must have a memory area containing the address of the next instruction"
                 ],
-                correct: 0,
+                correct: 3,
                 type: "single",
-                explanation: "Máy tính thực hiện 4 chức năng cơ bản: Di chuyển dữ liệu (Moving data), Lưu trữ dữ liệu (Storing data), Xử lý dữ liệu (Processing data), Điều khiển (Controlling)."
+                explanation: "Nguyên lý Von Neumann bao gồm các khái niệm: máy tính hoạt động dựa trên chương trình được lưu trữ, sử dụng bộ đếm chương trình để xác định lệnh tiếp theo, và bộ nhớ có thể địa chỉ hóa. Tuy nhiên, không yêu cầu mỗi lệnh phải có vùng nhớ chứa địa chỉ của lệnh tiếp theo."
             },
             {
                 id: 3,
-                question: "In the von Neumann architecture, what are stored together in the same memory?",
+                question: "Regarding the ALU (Arithmetic Logic Unit), besides basic arithmetic operations, what operations can it perform? (Choose 2 answers)",
                 options: [
-                    "Data and instructions",
-                    "Programs and operating system",
-                    "Input and output data",
-                    "Cache and main memory"
+                    "It handles logical operations such as AND, OR, XOR, NOT",
+                    "It handles data transfer operations like MOVE, GO, JUMP",
+                    "It handles decoding operations after an instruction is fetched",
+                    "It handles bit shifting operations like multiplication and division by powers of two"
                 ],
-                correct: 0,
-                type: "single",
-                explanation: "Kiến trúc von Neumann đặc trưng bởi việc lưu trữ cả dữ liệu và lệnh trong cùng một bộ nhớ, khác với kiến trúc Harvard có bộ nhớ riêng biệt."
+                correct: [0, 3],
+                type: "multiple",
+                explanation: "Bộ ALU (Arithmetic Logic Unit) không chỉ thực hiện các phép toán số học cơ bản mà còn thực hiện: phép toán logic (như AND, OR, XOR, NOT) và dịch bit (bit shifting), dùng để nhân hoặc chia với lũy thừa của 2."
             },
             {
                 id: 4,
-                question: "What is the function of the Control Unit (CU) in a processor?",
+                question: "Consider some computer generations:<br>1: The first computer generation<br>2: The second computer generation<br>3: The third computer generation<br><br>And some technologies used in computer generations:<br>A: Vacuum Tubes<br>B: Transistors<br>C: Integrated Circuits (IC)<br>D: Microprocessors<br><br>Select the main technology applied in each computer generation:",
                 options: [
-                    "Performs arithmetic and logical operations",
-                    "Stores data and instructions temporarily",
-                    "Directs the operation of other CPU components",
-                    "Interfaces with external devices"
+                    "1-D; 2-C; 3-B",
+                    "1-A; 2-C; 3-D",
+                    "1-A; 2-B; 3-C",
+                    "1-D; 2-B; 3-C"
                 ],
                 correct: 2,
                 type: "single",
-                explanation: "CU (Control Unit) có chức năng điều khiển hoạt động của tất cả các thành phần khác trong CPU, đảm bảo các lệnh được thực hiện đúng trình tự."
+                explanation: "Thế hệ máy tính đầu tiên sử dụng ống chân không (Vacuum Tubes), tiếp theo là transistor và mạch tích hợp."
             },
             {
                 id: 5,
-                question: "Which generation of computers used vacuum tubes?",
+                question: "What electronic component is used to govern operations such as fetching, decoding, and performing arithmetic operations executed by a processor?",
                 options: [
-                    "First generation",
-                    "Second generation", 
-                    "Third generation",
-                    "Fourth generation"
+                    "Using a system clock",
+                    "Using a quartz crystal",
+                    "Using an analog-to-digital converter",
+                    "Using a counter"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "Thế hệ máy tính đầu tiên (1940s-1950s) sử dụng đèn chân không (vacuum tubes). Các thế hệ sau sử dụng transistor, IC, và vi xử lý."
+                explanation: "Một hệ thống xung nhịp (system clock) được sử dụng để đồng bộ hóa các hoạt động của bộ xử lý, bao gồm nạp lệnh, giải mã, và thực hiện các phép toán."
             },
             {
                 id: 6,
-                question: "What does MAR (Memory Address Register) contain?",
+                question: "The pulse rate in the clock system is known as the:",
                 options: [
-                    "The data to be written to memory",
-                    "The address of the memory location to be accessed",
-                    "The instruction being executed",
-                    "The status of memory operations"
+                    "Clock cycle",
+                    "Clock speed",
+                    "Clock time",
+                    "Clock tick"
                 ],
                 correct: 1,
                 type: "single",
-                explanation: "MAR (Memory Address Register) chứa địa chỉ của vị trí bộ nhớ cần được truy cập để đọc hoặc ghi dữ liệu."
+                explanation: "Clock speed là tần số của xung nhịp, đo lường tốc độ thực hiện các hoạt động của CPU trong một giây."
             },
             {
                 id: 7,
-                question: "Which of the following are categories of external devices? (Select all correct answers)",
+                question: "The instruction, which adds 1 to the value in a memory location, has five stages: fetch opcode (four cycles), fetch operand address (three cycles), fetch operand (three cycles), add 1 to operand (three cycles), and store operand (three cycles). An interrupt sends a request at the beginning of the fetch operand stage. How many cycles does the processor take to enter the interrupt processing cycle?",
                 options: [
-                    "Human readable",
-                    "Machine readable", 
-                    "Communication devices",
-                    "Processing devices"
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
                 ],
-                correct: [0, 1, 2],
-                type: "multiple",
-                explanation: "Các thiết bị ngoại vi được phân thành 3 nhóm: Human readable (màn hình, bàn phím), Machine readable (cảm biến, scanner), Communication devices (card mạng, modem)."
+                correct: 2,
+                type: "single",
+                explanation: "Sau khi hoàn thành 3 chu kỳ trong 'Fetch operand', CPU cần thêm 5 chu kỳ để xử lý ngắt, tổng cộng: 3 + 5 = 8 chu kỳ."
             },
             {
                 id: 8,
-                question: "What is the maximum addressable memory of a processor with 24-bit address bus?",
+                question: "Which representation is most efficient to perform arithmetic operations on signed integer numbers?",
                 options: [
-                    "16 MB",
-                    "24 MB",
-                    "32 MB", 
-                    "64 MB"
+                    "Sign-magnitude",
+                    "2's complement",
+                    "1's & 2's complement",
+                    "1's complement"
                 ],
-                correct: 0,
+                correct: 1,
                 type: "single",
-                explanation: "Với 24-bit address bus: 2^24 = 16,777,216 bytes = 16 MB. Công thức: 2^(số bit địa chỉ) để tính dung lượng tối đa."
+                explanation: "Biểu diễn số nguyên có dấu bằng bù 2 là hiệu quả nhất cho các phép toán số học, vì nó loại bỏ sự mơ hồ của số 0 và đơn giản hóa các phép cộng, trừ."
             },
             {
                 id: 9,
-                question: "What interprets instructions in memory and causes them to be executed?",
+                question: "Interprets the instructions in memory and causes them to be executed.",
                 options: [
-                    "ALU (Arithmetic Logic Unit)",
-                    "Control Unit (CU)",
-                    "Memory Management Unit",
-                    "Input/Output Controller"
+                    "Registers",
+                    "CPU interconnection",
+                    "Arithmetic and Logic Unit (ALU)",
+                    "I/O Modules",
+                    "Control Unit (CU)"
                 ],
-                correct: 1,
+                correct: 4,
                 type: "single",
-                explanation: "Control Unit (CU) có nhiệm vụ diễn giải các lệnh trong bộ nhớ và điều khiển việc thực thi chúng."
+                explanation: "Control Unit (Bộ điều khiển) có nhiệm vụ giải mã các lệnh trong bộ nhớ và kích hoạt các thành phần liên quan để thực thi lệnh."
             },
             {
                 id: 10,
-                question: "What is the main characteristic of a Synchronous Bus?",
+                question: "What is the function of the bus system in the computer?",
                 options: [
-                    "Operations are controlled by a clock signal",
-                    "No timing constraints on operations",
-                    "Faster than asynchronous bus",
-                    "Uses fewer control lines"
+                    "Extend the communication function of the computer",
+                    "Connect components in the computer",
+                    "Control peripherals",
+                    "Transform signals in the computer",
+                    "All of the mentioned"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "Synchronous Bus đặc trưng bởi việc tất cả các hoạt động được điều khiển bởi tín hiệu xung nhịp (clock signal)."
+                explanation: "Hệ thống bus trong máy tính là một kênh giao tiếp giữa các thành phần khác nhau như CPU, bộ nhớ và các thiết bị ngoại vi."
             },
             {
                 id: 11,
-                question: "What is the main advantage of cache memory?",
+                question: "What is the correct order of memory access speed from fastest to slowest?",
                 options: [
-                    "Larger storage capacity",
-                    "Lower cost per bit",
-                    "Faster access time than main memory",
-                    "Non-volatile storage"
+                    "Registers > Cache > RAM > SSD",
+                    "Cache > Registers > RAM > SSD",
+                    "Registers > Cache > SSD > RAM",
+                    "Cache > Registers > SSD > RAM",
+                    "All of the mentioned are wrong"
                 ],
-                correct: 2,
+                correct: 0,
                 type: "single",
-                explanation: "Cache memory có thời gian truy cập nhanh hơn nhiều so với main memory (RAM), giúp tăng hiệu suất hệ thống."
+                explanation: "Thứ tự tốc độ truy cập bộ nhớ từ nhanh nhất đến chậm nhất là: Registers (được sử dụng trực tiếp bởi CPU), Cache (bộ nhớ đệm giúp truy xuất dữ liệu nhanh), RAM (bộ nhớ truy cập ngẫu nhiên), và SSD (là bộ nhớ lưu trữ chậm nhất trong các lựa chọn này)."
             },
             {
                 id: 12,
-                question: "In direct mapping cache, how many bits are needed for the TAG field with 256MB main memory and 512KB cache?",
+                question: "What is the special feature of Memory Cache?",
                 options: [
-                    "8 bits",
-                    "9 bits", 
-                    "10 bits",
-                    "11 bits"
+                    "Allows faster access than DRAM memory",
+                    "Memory cache is outboard storage memory",
+                    "Allows faster access than CPU registers",
+                    "Fixed memory - Read Only Memory",
+                    "Has a larger capacity than HDD"
                 ],
-                correct: 1,
+                correct: 0,
                 type: "single",
-                explanation: "Với 256MB main memory (28 bits) và 512KB cache (19 bits), TAG field cần 28-19 = 9 bits trong direct mapping."
+                explanation: "Bộ nhớ Cache cung cấp tốc độ truy cập nhanh hơn nhiều so với DRAM. Cache thường được dùng để lưu trữ dữ liệu tạm thời mà CPU cần truy cập nhanh."
             },
             {
                 id: 13,
-                question: "How many check bits are required for Single Error Correction (SEC) of 8-bit data?",
+                question: "A set-associative cache consists of 64 lines, divided into four-line sets. 2^19-words main memory contains 4K blocks of 128 words each. How many bits are there in the tag field of the cache?",
                 options: [
-                    "3 bits",
-                    "4 bits",
-                    "5 bits", 
-                    "6 bits"
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9"
                 ],
                 correct: 1,
                 type: "single",
-                explanation: "Để sửa lỗi 1-bit trong dữ liệu 8-bit, cần 4 check bits theo công thức Hamming code: 2^4 ≥ 8+4+1."
+                explanation: "Để tính số bit trong trường tag của bộ nhớ cache, cần phải tính toán số lượng bit cho block offset, số bit cho chỉ mục (index), và số bit cho tag. Tính toán chi tiết cho ra 6 bit cho trường tag."
             },
             {
                 id: 14,
-                question: "What is the correct order of storage technologies from lowest to highest performance?",
+                question: "Which one of the following is invalid about RAM?",
                 options: [
-                    "Hard Disk → NAND Flash → DRAM → SRAM",
-                    "NAND Flash → Hard Disk → DRAM → SRAM",
-                    "Hard Disk → DRAM → NAND Flash → SRAM",
-                    "SRAM → DRAM → NAND Flash → Hard Disk"
+                    "Both static and dynamic RAMs are volatile; that is, power must be continuously supplied to the memory to preserve the bit values.",
+                    "A dynamic memory cell is simpler and smaller than a static memory cell.",
+                    "Both static and dynamic RAMs require the supporting refresh circuitry.",
+                    "SRAMs are somewhat faster than DRAMs"
                 ],
-                correct: 0,
+                correct: 2,
                 type: "single",
-                explanation: "Thứ tự hiệu suất từ thấp đến cao: Hard Disk → NAND Flash → DRAM → SRAM"
+                explanation: "SRAM (Static RAM) không yêu cầu làm mới dữ liệu, nhưng DRAM (Dynamic RAM) cần có mạch làm mới vì nó mất dữ liệu theo thời gian."
             },
             {
                 id: 15,
-                question: "In hard disk terminology, what is a cylinder?",
+                question: "In error-correcting code (single ECC), how many bits are used to correct one bit in 8-bit data?",
                 options: [
-                    "A single track on one platter",
-                    "The set of all tracks at the same relative position on all platters",
-                    "The gap between tracks",
-                    "A section of a track"
+                    "4",
+                    "5",
+                    "6",
+                    "7"
                 ],
                 correct: 1,
                 type: "single",
-                explanation: "Cylinder là tập hợp tất cả các track ở cùng vị trí tương đối trên tất cả các đĩa (platters) trong ổ cứng."
+                explanation: "Để sửa lỗi một bit trong bộ dữ liệu 8 bit sử dụng mã ECC (Error-Correcting Code), cần ít nhất 5 bit."
             },
             {
                 id: 16,
-                question: "Which RAID level uses striping with parity and requires minimum 3 disks?",
+                question: "What is correct about increasing performance and endurance?",
                 options: [
-                    "RAID 0",
-                    "RAID 1", 
-                    "RAID 3",
-                    "RAID 5"
+                    "Hard Disk > DRAM > NAND Flash > SRAM",
+                    "Hard Disk > NAND Flash > DRAM > SRAM",
+                    "NAND Flash > Hard Disk > SRAM > DRAM",
+                    "Hard Disk > DRAM > SRAM > NAND Flash"
                 ],
-                correct: 2,
+                correct: 1,
                 type: "single",
-                explanation: "RAID 3 sử dụng kỹ thuật striping với parity bit và yêu cầu tối thiểu 3 đĩa để hoạt động."
+                explanation: "Để cải thiện hiệu suất và độ bền của hệ thống, thứ tự từ thiết bị lưu trữ chậm nhất đến nhanh nhất là: Hard Disk (chậm nhất), NAND Flash (SSD), DRAM, và SRAM (nhanh nhất)."
             },
             {
                 id: 17,
-                question: "What is the main performance advantage of SSD over magnetic disk?",
+                question: "With the hard disk data layout, the set of all the tracks in the same relative position on the platter is called:",
                 options: [
-                    "Lower cost per gigabyte",
-                    "Larger storage capacity",
-                    "Faster access time and lower latency",
-                    "Better data compression"
+                    "Cylinder",
+                    "Tracks",
+                    "Inter-track gap",
+                    "Sector"
                 ],
-                correct: 2,
+                correct: 0,
                 type: "single",
-                explanation: "SSD có thời gian truy cập nhanh hơn và độ trễ thấp hơn đáng kể so với ổ đĩa từ tính (HDD)."
+                explanation: "Trong ổ cứng, một Cylinder là tập hợp các track ở cùng một vị trí tương đối trên tất cả các đĩa trong ổ."
             },
             {
                 id: 18,
-                question: "According to De Morgan's theorem, NOT(A OR B) equals:",
+                question: "The speed of data delivery is your main concern when configuring a RAID drive for a Media Streaming Server. This server has two hard disks installed. What type of RAID should you install, and what type of data will be stored on Disk 1 and Disk 2?",
                 options: [
-                    "NOT A AND NOT B",
-                    "NOT A OR NOT B",
-                    "A AND B",
-                    "A OR B"
+                    "RAID 0 - Disk 1 (Stripe) and Disk 2 (Stripe)",
+                    "RAID 0 - Disk 1 (Mirror) and Disk 2 (Mirror)",
+                    "RAID 1 - Disk 1 (Stripe) and Disk 2 (Stripe)",
+                    "RAID 1 - Disk 1 (Mirror) and Disk 2 (Mirror)"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "Định lý De Morgan: NOT(A OR B) = NOT A AND NOT B. Phủ định của OR là AND của các phủ định."
+                explanation: "RAID 0 chia nhỏ dữ liệu và ghi trên các đĩa khác nhau (striping), giúp tăng tốc độ truy xuất dữ liệu, phù hợp với các hệ thống cần tốc độ cao như máy chủ phát video."
             },
             {
                 id: 19,
-                question: "What is an interrupt vector?",
+                question: "In terms of performance, what is the main advantage of a solid-state drive over a magnetic disk?",
                 options: [
-                    "A signal sent by I/O device to CPU",
-                    "A memory location containing interrupt handler addresses", 
-                    "A register storing interrupt status",
-                    "A type of interrupt priority"
+                    "A solid-state drive has faster access time, lower latency, and higher reliability.",
+                    "A solid-state drive has larger capacity, lower power consumption, and lower cost.",
+                    "A solid-state drive has better compatibility, longer lifespan, and higher security.",
+                    "A solid-state drive has none of the mentioned advantages over a magnetic disk."
                 ],
-                correct: 1,
+                correct: 0,
                 type: "single",
-                explanation: "Interrupt vector là vùng bộ nhớ chứa địa chỉ của các interrupt handlers, giúp CPU xác định trình xử lý ngắt phù hợp."
+                explanation: "SSD (Solid State Drive) có thời gian truy cập nhanh hơn, độ trễ thấp hơn và độ tin cậy cao hơn so với ổ cứng cơ học (HDD) vì không có các bộ phận chuyển động."
             },
             {
                 id: 20,
-                question: "In instruction execution, what does 'Operand Address Calculation' involve?",
+                question: "Assume that a truth table has inputs 0,0 → output 1 and inputs 1,0 → output 1. Which basic operator matches the table above?",
                 options: [
-                    "Computing the result of an operation",
-                    "Determining the memory address of an operand",
-                    "Fetching the instruction from memory",
-                    "Storing the result back to memory"
+                    "AND",
+                    "OR",
+                    "NAND",
+                    "NOR"
                 ],
                 correct: 1,
                 type: "single",
-                explanation: "Operand Address Calculation là quá trình xác định địa chỉ bộ nhớ của toán hạng cần thiết cho lệnh."
+                explanation: "Một bảng chân lý với hai giá trị đầu vào 1,0 và 1 sẽ trả về kết quả OR. Vì với OR, chỉ cần một trong hai đầu vào là 1, đầu ra sẽ là 1."
             },
             {
                 id: 21,
-                question: "What role does an API (Application Programming Interface) play?",
+                question: "In isolated I/O:",
                 options: [
-                    "Allows programs to access hardware using high-level libraries",
-                    "Defines machine language instructions",
-                    "Manages memory allocation",
-                    "Controls interrupt handling"
+                    "The I/O devices and the memory share the same address space",
+                    "The I/O devices have a separate address space from memory",
+                    "The memory and I/O devices have an associated address space",
+                    "A part of the memory is specifically set aside for the I/O operation",
+                    "None of the mentioned"
                 ],
-                correct: 0,
+                correct: 1,
                 type: "single",
-                explanation: "API cho phép các chương trình truy cập tài nguyên phần cứng thông qua các thư viện ngôn ngữ bậc cao."
+                explanation: "Trong I/O isolated, các thiết bị I/O và bộ nhớ có không gian địa chỉ riêng biệt, nghĩa là chúng không chia sẻ cùng một không gian địa chỉ."
             },
             {
                 id: 22,
-                question: "What is the initial state of a newly created process?",
+                question: "What is an interrupt vector?",
                 options: [
-                    "Ready",
-                    "Running",
-                    "New", 
-                    "Waiting"
+                    "Part of memory which contains the addresses of interrupt handlers",
+                    "A signal an I/O device sends to CPU",
+                    "A signal an I/O software sends to CPU",
+                    "None of the mentioned"
                 ],
-                correct: 2,
+                correct: 0,
                 type: "single",
-                explanation: "Khi một tiến trình mới được tạo, nó bắt đầu ở trạng thái 'New' trước khi chuyển sang 'Ready' để chờ CPU."
+                explanation: "Interrupt vector là phần bộ nhớ chứa các địa chỉ của interrupt handlers, dùng để xử lý các ngắt từ các thiết bị ngoại vi."
             },
             {
                 id: 23,
-                question: "Which statement about TLB (Translation Lookaside Buffer) is INCORRECT?",
+                question: "What is the main distinction between Interrupt-Driven I/O and Direct Memory Access (DMA)?",
                 options: [
-                    "TLB eliminates the need for page tables in memory",
-                    "TLB stores recent virtual-to-physical address translations",
-                    "TLB miss requires accessing the page table",
-                    "TLB is a cache for address translations"
+                    "Interrupt-Driven I/O involves the CPU in every data transfer, while DMA bypasses the CPU and transfers data directly between I/O device and memory",
+                    "Interrupt-Driven I/O requires special hardware and software support, while DMA does not need any additional components",
+                    "Interrupt-Driven I/O is suitable for small and frequent data transfers, while DMA is suitable for large and infrequent data transfers",
+                    "All of the mentioned"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "❌ TLB không loại bỏ nhu cầu về page table, mà chỉ là cache giúp truy cập page table nhanh hơn."
+                explanation: "Interrupt-Driven I/O yêu cầu CPU tham gia vào mỗi lần truyền dữ liệu, trong khi DMA (Direct Memory Access) cho phép truyền tải dữ liệu trực tiếp giữa thiết bị I/O và bộ nhớ mà không cần qua CPU."
             },
             {
                 id: 24,
-                question: "How does Boolean algebra help in digital circuit design?",
+                question: "What role does an Application Programming Interface (API) play in software development?",
                 options: [
-                    "It simplifies the implementation of logical functions",
-                    "It increases circuit complexity",
-                    "It reduces power consumption",
-                    "It improves signal quality"
+                    "It allows program access to hardware resources using high-level language libraries",
+                    "It defines low-level machine instructions",
+                    "It provides a standard for binary portability",
+                    "It manages system resources for the operating system and machine language instructions"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "Boolean algebra giúp đơn giản hóa việc thiết kế và triển khai các hàm logic trong mạch số."
+                explanation: "API (Application Programming Interface) cho phép chương trình truy cập các tài nguyên phần cứng thông qua các thư viện ngôn ngữ lập trình cấp cao."
             },
             {
                 id: 25,
-                question: "What is the output of a NAND gate when both inputs are 1?",
+                question: "Which state indicates that a process is currently being executed by the processor?",
                 options: [
-                    "0",
-                    "1",
-                    "Undefined",
-                    "High impedance"
+                    "Running",
+                    "Ready",
+                    "NewBorn",
+                    "Halted"
                 ],
                 correct: 0,
                 type: "single",
-                explanation: "NAND gate với cả hai đầu vào là 1 sẽ cho đầu ra là 0. NAND = NOT AND, nên NOT(1 AND 1) = NOT(1) = 0."
+                explanation: "Running là trạng thái khi một tiến trình đang được thực thi bởi CPU."
+            },
+            {
+                id: 26,
+                question: "Which of the following statements is incorrect about Translation Look-aside Buffer (TLB)?",
+                options: [
+                    "The use of TLB eliminates the need for keeping a page table in memory",
+                    "TLB only maintains a subset of the entries stored in the full memory-based page table",
+                    "When there is a TLB miss the system needs to access the page table",
+                    "A translation lookaside buffer (TLB) is a memory cache that stores the recent translations of virtual memory to physical memory"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "TLB (Translation Lookaside Buffer) lưu trữ một phần của bảng trang và giúp giảm thiểu việc phải truy cập bảng trang trong bộ nhớ."
+            },
+            {
+                id: 27,
+                question: "How does Boolean algebra contribute to the design of digital circuits?",
+                options: [
+                    "It simplifies the implementation of desired functions",
+                    "It helps in the analysis of economic data",
+                    "It facilitates the design of analog circuits",
+                    "It is primarily used for chemical engineering and physical engineering"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Boolean algebra là công cụ quan trọng trong thiết kế mạch số vì nó giúp đơn giản hóa việc triển khai các hàm logic."
+            },
+            {
+                id: 28,
+                question: "When both inputs are 0, what is the result of a NOR gate?",
+                options: [
+                    "0",
+                    "1",
+                    "2",
+                    "Undefined",
+                    "#NA"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Cổng NOR sẽ trả về 1 khi cả hai đầu vào đều là 0, điều này làm nó trái ngược với cổng OR."
+            },
+            {
+                id: 29,
+                question: "The operation yields true (binary value 1) if and only if both of its operands are true.",
+                options: [
+                    "OR",
+                    "AND",
+                    "XOR",
+                    "NAND"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Cổng AND trả về giá trị true (1) chỉ khi cả hai toán hạng đều là true (1)."
+            },
+            {
+                id: 30,
+                question: "We have a long-term queue of process requests, typically stored on:",
+                options: [
+                    "main memory",
+                    "disk",
+                    "cache memory",
+                    "registers"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Disk là nơi lưu trữ các yêu cầu tiến trình dài hạn trong hệ thống."
+            },
+            {
+                id: 31,
+                question: "Which registers can be assigned to a variety of functions by the programmer?",
+                options: [
+                    "Data registers",
+                    "General purpose registers",
+                    "Address registers",
+                    "Condition codes (flags)"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "General purpose registers có thể được lập trình viên gán cho nhiều chức năng khác nhau trong quá trình xử lý."
+            },
+            {
+                id: 32,
+                question: "The hardware mechanism that allows a device to notify the CPU is called:",
+                options: [
+                    "polling",
+                    "interrupt",
+                    "driver",
+                    "controlling"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Interrupt là cơ chế phần cứng cho phép một thiết bị gửi tín hiệu yêu cầu CPU thực hiện một tác vụ."
+            },
+            {
+                id: 33,
+                question: "What is a branch instruction?",
+                options: [
+                    "The instructions that are used to divide a program into multiple subprograms",
+                    "The instructions that have as one of its operands the address of the next instruction to be executed",
+                    "The instructions that are used to pause the program",
+                    "The instructions that are used to return to the beginning of the program"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Branch instructions là các lệnh có một trong các toán hạng là địa chỉ của lệnh tiếp theo sẽ được thực thi, cho phép thay đổi dòng chảy chương trình."
+            },
+            {
+                id: 34,
+                question: "Which of the following statement is correct about addressing modes?",
+                options: [
+                    "They define how the operands of an instruction are specified, including immediate, register, direct, and indirect addressing modes",
+                    "Addressing modes are irrelevant in computer architecture, and all instructions only operate on values stored in registers",
+                    "Addressing modes are limited to only immediate and direct modes; register and indirect addressing modes are not used in modern computer systems",
+                    "All instructions in computer architecture use indirect addressing modes, making it the only relevant mode for operand specification"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Addressing modes xác định cách các toán hạng của một lệnh được chỉ định, ví dụ như trực tiếp (direct), gián tiếp (indirect), và ngay lập tức (immediate)."
+            },
+            {
+                id: 35,
+                question: "A benchmark program is running on a 400 MHz processor. The executed program consists of 500 instruction executions, with the following instruction mix and clock cycle count:<br>• Instruction type: Arithmetic (300 instructions), Data transfer (100 instructions), Control transfer (100 instructions)<br>• Cycles per instruction: Arithmetic (1), Data transfer (2), Control transfer (2)<br><br>Calculate MIPS rate for this case.",
+                options: [
+                    "MIPS rate = 285.7",
+                    "MIPS rate = 275.7",
+                    "MIPS rate = 265.7",
+                    "MIPS rate = 295.7"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Để tính MIPS (Million Instructions Per Second), cần tính tổng số chu kỳ của các lệnh và chia cho thời gian thực thi."
+            },
+            {
+                id: 36,
+                question: "In MASM32, which OPCODE is used to compare two values?",
+                options: [
+                    "COM",
+                    "CMP",
+                    "IF... ELSE",
+                    "TEST"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "CMP là mã lệnh trong MASM32 dùng để so sánh hai giá trị."
+            },
+            {
+                id: 37,
+                question: "What is the primary purpose of the \"Fetch instruction\" phase in the operation of a processor?",
+                options: [
+                    "To read an instruction from memory",
+                    "To interpret the instruction",
+                    "To perform arithmetic operations on data",
+                    "To write data to memory"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Mục đích chính của giai đoạn Fetch instruction là đọc lệnh từ bộ nhớ vào CPU để thực thi."
+            },
+            {
+                id: 38,
+                question: "What is the role of the registers in a processor?",
+                options: [
+                    "Registers in a processor provide fast, temporary storage for data and instructions, facilitating efficient access during instruction execution",
+                    "Registers are only used to store data temporarily during the execution of a program and do not contribute to the processing of instructions",
+                    "Registers are solely responsible for storing data from the main memory and have no involvement in holding instructions or facilitating data manipulation",
+                    "Registers are only necessary when the CPU is idle and have no impact on the speed or efficiency of instruction execution"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Registers trong CPU cung cấp bộ nhớ tạm thời nhanh chóng cho dữ liệu và lệnh, giúp tăng tốc độ truy xuất khi thực thi lệnh."
+            },
+            {
+                id: 39,
+                question: "What is the significance of the program counter (PC) in the fetch phase of the instruction cycle?",
+                options: [
+                    "The program counter (PC) is not used in the fetch phase, and its role is limited to tracking the number of instructions executed by the CPU",
+                    "The program counter (PC) in the fetch phase holds the memory address of the next instruction to be fetched and executed",
+                    "The program counter (PC) is responsible for executing instructions and has no specific role during the fetch phase",
+                    "The program counter (PC) is only relevant in multi-core processors and does not contribute to the fetch phase of the instruction cycle in single-core systems"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "Program Counter (PC) lưu địa chỉ bộ nhớ của lệnh tiếp theo cần lấy và thực thi trong giai đoạn Fetch."
+            },
+            {
+                id: 40,
+                question: "Which of the following statement is correct in the context of Instruction Pipelining?",
+                options: [
+                    "Instruction Pipelining reduces the efficiency of instruction execution by introducing delays and dependencies between instructions",
+                    "Instruction Pipelining is only effective for specific types of instructions and has no impact on the overall efficiency of instruction execution",
+                    "Instruction Pipelining enhances efficiency by enabling simultaneous execution of multiple instructions in different stages, boosting overall throughput",
+                    "Instruction Pipelining improves efficiency by processing multiple instructions simultaneously, reducing execution time. However, it can face challenges like hazards, introducing delays and impacting overall performance"
+                ],
+                correct: 3,
+                type: "single",
+                explanation: "Instruction Pipelining giúp tăng hiệu suất bằng cách xử lý nhiều lệnh đồng thời. Tuy nhiên, nó có thể gặp phải một số vấn đề như hazards, gây ra độ trễ và ảnh hưởng đến hiệu suất chung."
+            },
+            {
+                id: 41,
+                question: "What does CISC stand for?",
+                options: [
+                    "Complex Instruction Set Computer",
+                    "Computer Instruction Set Complex",
+                    "Complex Instruction Summarize Computer",
+                    "Computer Instruction Summarize Complex"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "CISC (Complex Instruction Set Computer) là một loại kiến trúc máy tính có bộ chỉ thị phức tạp, trong đó mỗi lệnh có thể thực hiện nhiều thao tác phức tạp."
+            },
+            {
+                id: 42,
+                question: "What is one of the advantages of using a register file in computer architecture?",
+                options: [
+                    "Reduction in memory accesses, saving time",
+                    "More efficient use of space due to dynamic adaptation",
+                    "Efficient handling of both local and global variables",
+                    "Easier management of cache residency"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Register file giúp giảm thiểu việc truy xuất bộ nhớ, vì các thanh ghi trong CPU có thể chứa các giá trị tạm thời cần thiết cho việc tính toán, từ đó tiết kiệm thời gian."
+            },
+            {
+                id: 43,
+                question: "What is the main benefit of using RISC over CISC?",
+                options: [
+                    "RISC has more instructions and addressing modes than CISC",
+                    "RISC has faster instruction execution and simpler instruction decoding than CISC",
+                    "RISC has variable-length instruction formats and direct memory access than CISC",
+                    "RISC has more registers and pipelines than CISC"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "RISC (Reduced Instruction Set Computer) có ưu điểm là lệnh đơn giản và dễ giải mã hơn, giúp thực thi nhanh chóng so với CISC, vốn có bộ lệnh phức tạp."
+            },
+            {
+                id: 44,
+                question: "In SuperScalar computer architecture, the primary goal of utilizing multiple processors concurrently is to",
+                options: [
+                    "Increase processing speed by increasing CPU frequency",
+                    "Improve performance by executing more than one instruction per machine cycle",
+                    "Reduce the size of the CPU to conserve energy",
+                    "Enhance computational power by increasing the number of CPU cores"
+                ],
+                correct: 1,
+                type: "single",
+                explanation: "SuperScalar là kiến trúc cho phép thực thi nhiều lệnh trong một chu kỳ máy, giúp tăng hiệu suất tổng thể của hệ thống."
+            },
+            {
+                id: 45,
+                question: "_____ is (are) determined by the number of instructions that can be fetched and executed at the same time (the number of parallel pipelines) and by the speed and sophistication of the mechanisms that the processor uses to find independent instructions.",
+                options: [
+                    "Instruction-level parallelism",
+                    "Machine parallelism",
+                    "Both instruction-level parallelism and machine parallelism",
+                    "None of the mentioned"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Instruction-level parallelism (ILP) đề cập đến khả năng thực thi các lệnh song song trong một chu kỳ máy, tùy thuộc vào số lượng pipeline và khả năng tìm kiếm lệnh độc lập."
+            },
+            {
+                id: 46,
+                question: "\"Multiple processors share a single memory or pool of memory by means of a shared bus or other interconnection mechanism; a distinguishing feature is that the memory access time to any region of memory is approximately the same for each processor\". Which concept does the statement belong to?",
+                options: [
+                    "Symmetric multiprocessor (SMP)",
+                    "Nonuniform memory access (NUMA)",
+                    "Cluster",
+                    "Single instruction, multiple data (SIMD)"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "SMP là một hệ thống nhiều bộ xử lý chia sẻ bộ nhớ chung, với đặc điểm là tất cả các bộ xử lý có thời gian truy cập bộ nhớ gần như nhau."
+            },
+            {
+                id: 47,
+                question: "Which write technique in which all write operations are made to main memory as well as to the cache, ensuring that main memory is always valid.",
+                options: [
+                    "Write through",
+                    "Write back",
+                    "Write around",
+                    "No write allocate"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Write-through là kỹ thuật trong đó mọi thao tác ghi dữ liệu được thực hiện đồng thời lên bộ nhớ chính và bộ nhớ cache, đảm bảo bộ nhớ chính luôn có dữ liệu hợp lệ."
+            },
+            {
+                id: 48,
+                question: "How does multithreading improve the performance of a processor?",
+                options: [
+                    "It increases the instruction-level parallelism by issuing multiple instructions from different threads in the same cycle",
+                    "It increases the thread-level parallelism by executing multiple threads on different cores or processors",
+                    "It increases the utilization of the processor resources by hiding the latency of long-latency events such as cache misses or branch mispredictions",
+                    "All of the mentioned"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Multithreading cải thiện hiệu suất của CPU bằng cách giấu đi độ trễ của các sự kiện dài hạn như lỗi truy xuất cache hoặc lỗi dự đoán nhánh."
+            },
+            {
+                id: 49,
+                question: "Follow the Amdahl's law for multiprocessors, if only 10% of the code is inherently serial (f = 0.9), running the program on a multicore system with 4 processors, a performance gain (speedup factor) would be",
+                options: [
+                    "307%",
+                    "297%",
+                    "317%",
+                    "327%"
+                ],
+                correct: 0,
+                type: "single",
+                explanation: "Áp dụng định luật Amdahl với f = 0.1 (10% mã tuần tự) và P = 4 (4 bộ xử lý), hiệu quả tăng tốc được tính theo công thức: S = 1 / (f + (1-f)/P) = 1 / (0.1 + 0.9/4) ≈ 3.077 hay 307%."
+            },
+            {
+                id: 50,
+                question: "What is the most common mapping technique used in cache memory in modern computers?",
+                options: [
+                    "Direct Mapping",
+                    "Fully Associative",
+                    "Set Associative",
+                    "None of the mentioned"
+                ],
+                correct: 2,
+                type: "single",
+                explanation: "Kỹ thuật ánh xạ bộ nhớ cache phổ biến nhất trong các máy tính hiện đại là Set Associative, nơi mỗi block có thể được ánh xạ đến nhiều 'bucket' trong cache, làm giảm khả năng xảy ra xung đột."
             }
         ];
 
         let userAnswers = {};
         let showingAnswers = false;
+        let answeredQuestions = new Set();
 
         function initQuiz() {
             renderAllQuestions();
@@ -715,14 +1035,14 @@
         }
 
         function selectOption(questionId, optionIndex) {
+            if (answeredQuestions.has(questionId)) return;
+            
             const question = questions.find(q => q.id === questionId);
-            const questionElement = document.getElementById(`question-${questionId}`);
             const optionElement = document.getElementById(`q${questionId}-opt${optionIndex}`);
             
-            if (showingAnswers) return; // Prevent changes when answers are shown
+            if (showingAnswers) return;
             
             if (question.type === 'multiple') {
-                // Handle multiple choice
                 if (!userAnswers[questionId]) {
                     userAnswers[questionId] = [];
                 }
@@ -735,17 +1055,16 @@
                     userAnswers[questionId] = userAnswers[questionId].filter(idx => idx !== optionIndex);
                 }
                 
-                // Check if user has selected the correct number of answers for multiple choice
                 const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
                 if (userAnswers[questionId] && userAnswers[questionId].length === correctAnswers.length) {
+                    answeredQuestions.add(questionId);
+                    disableQuestionOptions(questionId);
                     showQuestionFeedback(questionId);
-                } else {
-                    hideQuestionFeedback(questionId);
                 }
             } else {
-                // Handle single choice
                 userAnswers[questionId] = optionIndex;
-                // Show feedback immediately for single choice
+                answeredQuestions.add(questionId);
+                disableQuestionOptions(questionId);
                 showQuestionFeedback(questionId);
             }
             
@@ -753,21 +1072,26 @@
             updateScoreSummary();
         }
 
+        function disableQuestionOptions(questionId) {
+            const optionElements = document.querySelectorAll(`[id^="q${questionId}-opt"]`);
+            optionElements.forEach(element => {
+                element.disabled = true;
+                element.parentElement.style.pointerEvents = 'none';
+                element.parentElement.style.opacity = '0.7';
+            });
+        }
+
         function showQuestionFeedback(questionId) {
             const question = questions.find(q => q.id === questionId);
             const explanationElement = document.getElementById(`explanation-${questionId}`);
-            const isCorrect = checkAnswer(questionId);
             
-            // Show explanation
             explanationElement.classList.add('show');
             
-            // Update option styling to show correct/incorrect
             const optionElements = document.querySelectorAll(`[id^="q${questionId}-opt"]`);
             optionElements.forEach((element, index) => {
                 const optionContainer = element.parentElement;
                 optionContainer.classList.remove('correct', 'incorrect', 'user-selected', 'user-incorrect');
                 
-                // Remove existing indicators
                 const existingIndicator = optionContainer.querySelector('.answer-indicator');
                 if (existingIndicator) {
                     existingIndicator.remove();
@@ -782,14 +1106,12 @@
                     const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
                     
                     if (correctAnswers.includes(index)) {
-                        // This is a correct answer
                         optionContainer.classList.add('correct');
                         const indicator = document.createElement('span');
                         indicator.className = 'answer-indicator correct-indicator';
                         indicator.textContent = isUserSelection ? '✓ Đúng' : '✓ Đáp án đúng';
                         optionContainer.appendChild(indicator);
                     } else if (isUserSelection) {
-                        // User selected wrong answer
                         optionContainer.classList.add('user-incorrect');
                         const indicator = document.createElement('span');
                         indicator.className = 'answer-indicator incorrect-indicator';
@@ -798,14 +1120,12 @@
                     }
                 } else {
                     if (index === question.correct) {
-                        // This is the correct answer
                         optionContainer.classList.add('correct');
                         const indicator = document.createElement('span');
                         indicator.className = 'answer-indicator correct-indicator';
-                        indicator.textContent = isUserSelection ? '✓ Đúng' : '✓ Đáp án đúng';
+                        indicator.textContent = '✓ Đáp án đúng';
                         optionContainer.appendChild(indicator);
                     } else if (isUserSelection) {
-                        // User selected wrong answer
                         optionContainer.classList.add('user-incorrect');
                         const indicator = document.createElement('span');
                         indicator.className = 'answer-indicator incorrect-indicator';
@@ -820,13 +1140,11 @@
             const explanationElement = document.getElementById(`explanation-${questionId}`);
             explanationElement.classList.remove('show');
             
-            // Remove feedback styling from options
             const optionElements = document.querySelectorAll(`[id^="q${questionId}-opt"]`);
             optionElements.forEach((element, index) => {
                 const optionContainer = element.parentElement;
                 optionContainer.classList.remove('correct', 'incorrect', 'user-selected', 'user-incorrect');
                 
-                // Remove existing indicators
                 const existingIndicator = optionContainer.querySelector('.answer-indicator');
                 if (existingIndicator) {
                     existingIndicator.remove();
@@ -839,7 +1157,6 @@
             const statusElement = document.getElementById(`status-${questionId}`);
             const questionElement = document.getElementById(`question-${questionId}`);
             
-            // Check if question is properly answered
             let isAnswered = false;
             if (question.type === 'multiple') {
                 const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
@@ -902,16 +1219,15 @@
             showingAnswers = true;
             
             questions.forEach(question => {
+                answeredQuestions.add(question.id);
                 const explanationElement = document.getElementById(`explanation-${question.id}`);
                 explanationElement.classList.add('show');
                 
-                // Highlight correct answers only
                 const optionElements = document.querySelectorAll(`[id^="q${question.id}-opt"]`);
                 optionElements.forEach((element, index) => {
                     const optionContainer = element.parentElement;
                     optionContainer.classList.remove('correct', 'incorrect', 'selected', 'user-selected', 'user-incorrect');
                     
-                    // Remove existing indicators
                     const existingIndicator = optionContainer.querySelector('.answer-indicator');
                     if (existingIndicator) {
                         existingIndicator.remove();
@@ -931,12 +1247,11 @@
                             optionContainer.classList.add('correct');
                             const indicator = document.createElement('span');
                             indicator.className = 'answer-indicator correct-indicator';
-                            indicator.textContent = '✓ Đúng';
+                            indicator.textContent = '✓ Đáp án đúng';
                             optionContainer.appendChild(indicator);
                         }
                     }
                     
-                    // Disable further interactions
                     element.disabled = true;
                 });
                 
@@ -950,67 +1265,14 @@
             showingAnswers = true;
             
             questions.forEach(question => {
-                const explanationElement = document.getElementById(`explanation-${question.id}`);
-                explanationElement.classList.add('show');
+                answeredQuestions.add(question.id);
+                showQuestionFeedback(question.id);
+                updateQuestionStatus(question.id);
                 
-                // Show user answers vs correct answers
                 const optionElements = document.querySelectorAll(`[id^="q${question.id}-opt"]`);
-                optionElements.forEach((element, index) => {
-                    const optionContainer = element.parentElement;
-                    optionContainer.classList.remove('correct', 'incorrect', 'selected', 'user-selected', 'user-incorrect');
-                    
-                    // Remove existing indicators
-                    const existingIndicator = optionContainer.querySelector('.answer-indicator');
-                    if (existingIndicator) {
-                        existingIndicator.remove();
-                    }
-                    
-                    const userAnswer = userAnswers[question.id];
-                    const isUserSelection = question.type === 'multiple' ? 
-                        (userAnswer && userAnswer.includes(index)) : 
-                        (userAnswer === index);
-                    
-                    if (question.type === 'multiple') {
-                        const correctAnswers = Array.isArray(question.correct) ? question.correct : [question.correct];
-                        
-                        if (correctAnswers.includes(index)) {
-                            // This is a correct answer
-                            optionContainer.classList.add('correct');
-                            const indicator = document.createElement('span');
-                            indicator.className = 'answer-indicator correct-indicator';
-                            indicator.textContent = isUserSelection ? '✓ Đúng - Bạn đã chọn' : '✓ Đáp án đúng';
-                            optionContainer.appendChild(indicator);
-                        } else if (isUserSelection) {
-                            // User selected wrong answer
-                            optionContainer.classList.add('user-incorrect');
-                            const indicator = document.createElement('span');
-                            indicator.className = 'answer-indicator incorrect-indicator';
-                            indicator.textContent = '✗ Sai - Bạn đã chọn';
-                            optionContainer.appendChild(indicator);
-                        }
-                    } else {
-                        if (index === question.correct) {
-                            // This is the correct answer
-                            optionContainer.classList.add('correct');
-                            const indicator = document.createElement('span');
-                            indicator.className = 'answer-indicator correct-indicator';
-                            indicator.textContent = isUserSelection ? '✓ Đúng - Bạn đã chọn' : '✓ Đáp án đúng';
-                            optionContainer.appendChild(indicator);
-                        } else if (isUserSelection) {
-                            // User selected wrong answer
-                            optionContainer.classList.add('user-incorrect');
-                            const indicator = document.createElement('span');
-                            indicator.className = 'answer-indicator incorrect-indicator';
-                            indicator.textContent = '✗ Sai - Bạn đã chọn';
-                            optionContainer.appendChild(indicator);
-                        }
-                    }
-                    
-                    // Disable further interactions
+                optionElements.forEach(element => {
                     element.disabled = true;
                 });
-                
-                updateQuestionStatus(question.id);
             });
             
             updateScoreSummary();
@@ -1019,19 +1281,19 @@
         function resetQuiz() {
             userAnswers = {};
             showingAnswers = false;
+            answeredQuestions.clear();
             
-            // Reset all form elements
             document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
                 input.checked = false;
                 input.disabled = false;
+                input.parentElement.style.pointerEvents = 'auto';
+                input.parentElement.style.opacity = '1';
             });
             
-            // Hide all explanations and feedback
             questions.forEach(question => {
                 hideQuestionFeedback(question.id);
             });
             
-            // Reset all option styling and remove indicators
             document.querySelectorAll('.option-item').forEach(option => {
                 option.classList.remove('correct', 'incorrect', 'selected', 'user-selected', 'user-incorrect');
                 const indicator = option.querySelector('.answer-indicator');
@@ -1040,7 +1302,6 @@
                 }
             });
             
-            // Update all question statuses
             questions.forEach(question => {
                 updateQuestionStatus(question.id);
             });
@@ -1048,8 +1309,14 @@
             updateScoreSummary();
         }
 
-        // Initialize quiz when page loads
-        document.addEventListener('DOMContentLoaded', initQuiz);
+        // Initialize quiz when page loads with error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                initQuiz();
+            } catch (error) {
+                console.error('Error initializing quiz:', error);
+            }
+        });
     </script>
 </body>
 </html>
